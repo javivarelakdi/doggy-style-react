@@ -80,17 +80,17 @@ Backend **http://localhost:5000**
 
 ## Frontend Views
 
-| View (Component) | Path             | description     |
-| :--------------- | ------------     | --------------  |
-| Home             | `/`              | profiles grid   |
-| Login            | `/login`         | login page      |
-| Protected        | `/protected`     | protected view  |
-| Profile          | `/users/:id`     | profile view    |
-| Favourites       | `/favs/:id`      | favs grid view  |
-​| Events           | `/events/`       | Events list     |
-​| Events           | `/events/:id`    | Event view      |​
-​| Chat List        | `/messages`      | Messages list   |​
-​| Chat one to one  | `/messages/:id`  | individual chat |​
+| View (Component)  | Path             | description     |
+| :---------------: | ------------     | --------------  |
+| Home              | `/`              | profiles grid   |
+| Login             | `/login`         | login page      |
+| Protected         | `/protected`     | protected view  |
+| Profile           | `/users/:id`     | profile view    |
+| Favourites        | `/favs/:id`      | favs grid view  |
+​| Events            | `/events/`       | Events list     |
+​| Events            | `/events/:id`    | Event view      |​
+​| Chat List         | `/messages`      | Messages list   |​
+​| Chat one to one   | `/messages/:id`  | individual chat |​
 
 ## Models
 ​
@@ -111,7 +111,7 @@ Backend **http://localhost:5000**
 
 ### Event model
 ​
-    { 
+	{ 
     	owner: { type: Schema.Types.ObjectId, ref: 'User'},
 		name: { type: String, required: true },
 		description: String,
@@ -120,7 +120,7 @@ Backend **http://localhost:5000**
 		initTime: { type: String, required: true },
 		endTime: { type: String, required: true },
 		attendees:[{ type: Schema.Types.ObjectId, ref: 'User' }]
-    }
+	}
 
 ### Location model
 
