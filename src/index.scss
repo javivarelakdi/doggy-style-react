@@ -2,16 +2,21 @@
 
 $pink: #EFA8E4;
 $white: #F7F7F7;
-$blue: #3B7E96;
+$blue: #97E5EF;;
 
 $font: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
 sans-serif;
 
+$rem: 16px;
+
 $font-size-big: 2rem;
 $font-size-medium: 1.5rem;
-$font-size-regular: 1rem;
+$font-size-default: 1rem;
 $font-size-small: 0.75rem;
+
+$min-width: 320px; //iphone 5
+$max-width: 576px; //from here desktop
 
 // sass mixins
 
@@ -20,9 +25,15 @@ $font-size-small: 0.75rem;
   @return $remSize * 1rem;
 }
 
+@mixin bp-small {
+  @media (min-width: $max-width) {
+    @content;
+  }
+}
+
 // generic styles
 
-html{font-size: 16px;}
+html{font-size: $rem;}
 
 body {
   margin: 0;
@@ -76,17 +87,23 @@ i{font-size: $font-size-medium;}
 }
 .bb-white { border-bottom: 1px solid $white; }
 
-// container
+// App container
 
-.container {
-  min-width: 320px;
-  max-width: 576px;
-  margin: 0 auto; 
+.App{
+  height: 100vh;
+  background-color: $blue;
+  color: $white;
+  .App__container {
+    min-width: $min-width;
+    max-width: $max-width;
+    margin: 0 auto; 
+  }
 }
 
 // height and widths when not using flex
 
 .full-height{height: 100%;}
+.full-height-vp{height: 100vh;}
 .half-height{height: 50%;}
 .full-width{width: 100%;}
 
@@ -296,53 +313,59 @@ input {
 
 // navs
 
-.header {
+.navbar {
   position: fixed; 
   top: 0; 
-  height: rem(50px);
+  height: 50px;
+  max-width: $max-width;
+  min-width: $min-width;
 }
 
-.header--double-height{
-  height: rem(100px);
+.navbar--footer{
+  top: unset;
+  bottom:0;
 }
 
-.footer{
-  position: fixed; 
-  bottom: 0;
-  height: rem(50px);
+.navbar--double-height{
+  height: 100px;
 }
 
 // sections
 
 .section{
-  height: calc(100vh);
+  height: 100vh;
   overflow: hidden;
 }
 
-.section--with-header{
+.section--with-navbar{
   height: calc(100vh - 100px);
-  padding-top: rem(50px);
-  padding-bottom: rem(50px);
+  padding-top: 50px;
+  padding-bottom: 50px;
 }
 
-.section--with-double-header{
+.section--with-tabs{
   height: calc(100vh - 150px);
-  padding-top: rem(100px);
-  padding-bottom: rem(50px);
+  padding-top: 100px;
+  padding-bottom: 50px;
 }
 
 // grid
 
-.section__grid-element{
-  height: rem(100px);
+.section__content{
+  max-height: 100%;
+  overflow: scroll;
+}
+
+.grid-element{
+  height: 100px;
   background-position: center center;
   background-size: auto 150%;
   background-repeat: no-repeat;
-  border: 1px solid;
+  border: 1px solid $white;
 }
 
-.section__grid-element--small{
-  height: rem(50px);
+.grid-element--small{
+  height: 50px;
 }
 
 // user profile block
@@ -381,9 +404,9 @@ input {
   .tab-panel__tab--active {background-color: $pink;}
 }
 
-// others helpers
+// others 
 
-.map{
+.mapbox-content{
   width: 100%;
   height: 100%;
 }
