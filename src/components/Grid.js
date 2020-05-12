@@ -1,6 +1,7 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
-export default class Section extends Component {
+export default class Grid extends Component {
   render() {
     const { columns, data } = this.props;
     let colIndex; 
@@ -20,9 +21,9 @@ export default class Section extends Component {
         {data.map((el, i) => {
           return (
             <li className={`col-${colIndex} grid-element flex-row`} key={i} style={{backgroundImage: `url(${el.img})`}}>
-                <a className="col-12 flex-row ai-end jc-end" href="">
-                  <span className="bg-pink fs-small fc-white pl-small pr-small">{el.name}</span>
-                </a>
+                <Link className="col-12 flex-row ai-end jc-end" to={el.id}>
+                  <span className="bg-pink fs-small fc-white pl-small pr-small">{el.username}</span>
+                </Link>
             </li>
           );
         })}     

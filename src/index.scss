@@ -334,7 +334,7 @@ input {
 
 .section{
   height: 100vh;
-  overflow: hidden;
+  overflow: auto;
 }
 
 .section--with-navbar{
@@ -353,7 +353,7 @@ input {
 
 .section__content{
   max-height: 100%;
-  overflow: scroll;
+  overflow: auto;
 }
 
 .grid-element{
@@ -374,7 +374,7 @@ input {
   height: calc(100vh - 300px);
   overflow: hidden;
   position: relative;
-  .profile__pic-container__pic{
+  &__pic{
     margin: 0 auto;
     display: block;
     max-width: 100%;
@@ -396,12 +396,11 @@ input {
 
 //tabs
 
-.tab-panel{
-  display: none;
-  &.tab-panel--active{
-    display: flex;
+.tab-list{
+  height: 50px;
+  &__active-tab {
+    background-color: $pink;
   }
-  .tab-panel__tab--active {background-color: $pink;}
 }
 
 // others 

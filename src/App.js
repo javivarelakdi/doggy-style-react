@@ -1,13 +1,17 @@
 import React, { Component } from "react";
-import { Switch, Route } from "react-router-dom";
+import { Switch, withRouter } from "react-router-dom";
 
 import Login from "./views/Login";
-import Home from "./views/Home";
 
-import { AnonRoute, PrivateRoute } from "./components";
+import { AnonRoute, PrivateRoute} from "./components";
 
 import apiClient from "./services/apiClient";
-import Protected from "./views/Protected";
+import GridView from "./views/GridView";
+import ProfileView from "./views/ProfileView";
+import FavsView from "./views/FavsView";
+
+const ProfileViewWithRouter  = withRouter(ProfileView);
+const FavsWithRouter  = withRouter(FavsView);
 
 class App extends Component {
   state = {
@@ -52,7 +56,9 @@ class App extends Component {
       });
   };
 
+  
   render() {
+    
     const { isLoggedIn, isLoading } = this.state;
     return (
       <div>
@@ -60,12 +66,18 @@ class App extends Component {
         {!isLoading && (
           <div className="App">
             <Switch>
-              <Route exact path={"/"} component={Home} />
+              {/* <Route exact path={"/"} component={Home} /> */}
               <AnonRoute exact path={"/login"} isLoggedIn={isLoggedIn}>
                 <Login onLogin={this.handleLogin} />
               </AnonRoute>
-              <PrivateRoute exact path={"/protected"} isLoggedIn={isLoggedIn}>
-                <Protected />
+              <PrivateRoute exact path={"/"} isLoggedIn={isLoggedIn}>
+                <GridView />
+              </PrivateRoute>
+              <PrivateRoute exact path={"/favs/:id"} isLoggedIn={isLoggedIn}>
+                <FavsWithRouter/>
+              </PrivateRoute>
+              <PrivateRoute exact path={"/:id"} isLoggedIn={isLoggedIn}>
+                <ProfileViewWithRouter/>
               </PrivateRoute>
             </Switch>
           </div>

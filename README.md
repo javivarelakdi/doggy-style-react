@@ -85,10 +85,9 @@ Backend **http://localhost:5000**
 | :---------------: | ------------     | --------------  |
 | Home              | `/`              | profiles grid   |
 | Login             | `/login`         | login page      |
-| Protected         | `/protected`     | protected view  |
-| Profile           | `/users/:id`     | profile view    |
+| Profile           | `/:id`           | profile view    |
 | Favourites        | `/favs/:id`      | favs grid view  |
-​| Events            | `/events/`       | Events list     |
+​| Events            | `/events`        | Events list     |
 ​| Events            | `/events/:id`    | Event view      |​
 ​| Chat List         | `/messages`      | Messages list   |​
 ​| Chat one to one   | `/messages/:id`  | individual chat |​

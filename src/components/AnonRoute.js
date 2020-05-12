@@ -11,7 +11,7 @@ function AnonRoute({ children, isLoggedIn, ...rest }) {
         ) : (
           <Redirect
             to={{
-              pathname: "/protected",
+              pathname: "/",
               state: { from: location },
             }}
           />
