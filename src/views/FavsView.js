@@ -4,9 +4,15 @@ import Section from "../components/Section"
 import Grid from "../components/Grid"
 import Tabs from "../components/Tabs"
 import user from "../data/user.json";
+import TabContent from "../components/TabContent"
 
 export default class FavsView extends Component {
   
+  state = {activeTab : "following"}
+
+  onClickTabItem = (tab) => {
+    this.setState({ activeTab: tab });
+  }
 
   render() {
     const headerNavElements = [
@@ -20,8 +26,6 @@ export default class FavsView extends Component {
       {href: "", iconClass:"fas fa-calendar"}
     ];
     
-    
-    
     const fans = user.fans.map((user, i) => {
       return {username: "soy fan", img: user.imgUrl, id:  user._id};
     });
@@ -32,15 +36,19 @@ export default class FavsView extends Component {
     return (
       <div className="App__container">
         <Navbar elements={headerNavElements}></Navbar>
-        <Section hasNav>
-          <Tabs>
+        <Tabs 
+          labels={["following", "followers"]} 
+          activeTab={this.state.activeTab} 
+          onClickTabItem={this.onClickTabItem}/>
+        <Section hasNav hasTabs>
+          <TabContent activeTab={this.state.activeTab}>
             <div label="following">
               <Grid data={favs} columns={2}/>
             </div>
             <div label="followers">
               <Grid data={fans} columns={2}/>
             </div>
-          </Tabs>
+          </TabContent>
         </Section>
         <Navbar elements={footerNavElements} isFooter></Navbar>
       </div>

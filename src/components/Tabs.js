@@ -1,58 +1,34 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import Tab from './Tab';
-
 class Tabs extends Component {
   static propTypes = {
-    children: PropTypes.instanceOf(Array).isRequired,
+    labels: PropTypes.instanceOf(Array).isRequired,
+    activeTab:  PropTypes.string.isRequired,
+    onClickTabItem: PropTypes.func.isRequired
   }
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      activeTab: this.props.children[0].props.label,
-    };
-  }
-
-  onClickTabItem = (tab) => {
-    this.setState({ activeTab: tab });
-  }
+  
 
   render() {
-    const {
-      onClickTabItem,
-      props: {
-        children,
-      },
-      state: {
-        activeTab,
-      }
-    } = this;
 
+    const { labels, activeTab, onClickTabItem } = this.props;
+    const classNames = "col-6 ta-center full-height flex-row ai-center jc-center"
     return (
-      <div className="flex-row">
-        <ol className="tab-list col-12 flex-row jc-between">
-          {children.map((child) => {
-            const { label } = child.props;
-
+      <div className="tab-list flex-row">
+        <ul className="col-12 flex-row jc-between">
+          {labels.map((label, i) => {
             return (
-              <Tab
-                activeTab={activeTab}
-                key={label}
-                label={label}
-                onClick={onClickTabItem}
-              />
+              <li 
+                key={i}
+                className={ label === activeTab ? `${classNames} tab-list__active-tab` : classNames }
+                onClick={() => onClickTabItem(label)}
+              >
+                {label}
+              </li>
             );
           })}
-        </ol>
-        <div className="full-width">
-          {children.map((child) => {
-            if (child.props.label !== activeTab) return undefined;
-            return child.props.children;
-          })}
-        </div>
+        </ul>
       </div>
     );
   }
