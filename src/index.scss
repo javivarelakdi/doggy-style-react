@@ -60,6 +60,7 @@ i{font-size: $font-size-medium;}
 .fs-md{font-size: $font-size-medium;}
 
 .ellipsis{
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
@@ -70,10 +71,11 @@ i{font-size: $font-size-medium;}
 .bg-white {background-color: $white;}
 .bg-blue {background-color: $blue;}
 
-//font-colors
+//fonts
 
 .fc-pink{color: $pink;}
 .fc-white{color: $white;} 
+.fw-bold{font-weight: bold;}
 
 // borders 
 
@@ -182,27 +184,27 @@ i{font-size: $font-size-medium;}
 
 //paddings
 
-.pa-small {padding: 0.5rem;}
-.pb-small{padding-bottom: 0.5rem;}
-.pt-small{padding-top: 0.5rem;}
+.pa-small {padding: 0.5rem; box-sizing: border-box;}
+.pb-small{padding-bottom: 0.5rem; box-sizing: border-box;}
+.pt-small{padding-top: 0.5rem; box-sizing: border-box;}
 .pr-small{padding-right: 0.5rem; box-sizing: border-box;}
 .pl-small{padding-left: 0.5rem; box-sizing: border-box;}
 .pr-1{padding-right: 1rem; box-sizing: border-box;}
 .pl-1{padding-left: 1rem; box-sizing: border-box;}
-.pt-1{padding-top: 1rem; }
-.pb-1{padding-bottom: 1rem; }
-.pa-1 {padding: 1rem;}
+.pt-1{padding-top: 1rem; box-sizing: border-box;}
+.pb-1{padding-bottom: 1rem; box-sizing: border-box;}
+.pa-1 {padding: 1rem; box-sizing: border-box;}
 
 //margins
 
-.mb-small{margin-bottom: 0.5rem;}
-.mt-small{margin-top: 0.5rem;}
+.mb-small{margin-bottom: 0.5rem; box-sizing: border-box;}
+.mt-small{margin-top: 0.5rem; box-sizing: border-box;}
 .mr-small{margin-right: 0.5rem; box-sizing: border-box;}
 .ml-small{margin-left: 0.5rem; box-sizing: border-box;}
 .mr-1{margin-right: 1rem; box-sizing: border-box;}
 .ml-1{margin-left: 1rem; box-sizing: border-box;}
-.mt-1{margin-top: 1rem; }
-.mb-1{margin-bottom: 1rem; }
+.mt-1{margin-top: 1rem; box-sizing: border-box;}
+.mb-1{margin-bottom: 1rem; box-sizing: border-box;}
 
 //align-self
 

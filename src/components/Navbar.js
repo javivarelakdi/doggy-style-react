@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
 export default class Navbar extends Component {
   render() {
@@ -9,9 +10,9 @@ export default class Navbar extends Component {
             {elements.map((el, i) => {
               return (
                 <li className="pl-1 pr-1 col-3 ta-center as-center" key={i}>
-                  <a href={el.href}>
+                  <Link to={el.to}>
                     <i className={el.iconClass}></i>
-                  </a>
+                  </Link>
                 </li>
               );
             })}              

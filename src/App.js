@@ -9,9 +9,9 @@ import apiClient from "./services/apiClient";
 import GridView from "./views/GridView";
 import ProfileView from "./views/ProfileView";
 import FavsView from "./views/FavsView";
+import EventListView from "./views/EventListView";
 
-const ProfileViewWithRouter  = withRouter(ProfileView);
-const FavsWithRouter  = withRouter(FavsView);
+const ProfileWithRouter  = withRouter(ProfileView);
 
 class App extends Component {
   state = {
@@ -59,7 +59,7 @@ class App extends Component {
   
   render() {
     
-    const { isLoggedIn, isLoading } = this.state;
+    const { isLoggedIn, isLoading, user } = this.state;
     return (
       <div>
         {isLoading && <div> Loading.......</div>}
@@ -71,13 +71,16 @@ class App extends Component {
                 <Login onLogin={this.handleLogin} />
               </AnonRoute>
               <PrivateRoute exact path={"/"} isLoggedIn={isLoggedIn}>
-                <GridView />
+                <GridView currentUser={user.data}/>
               </PrivateRoute>
-              <PrivateRoute exact path={"/favs/:id"} isLoggedIn={isLoggedIn}>
-                <FavsWithRouter/>
+              <PrivateRoute exact path={"/events"} isLoggedIn={isLoggedIn}>
+                <EventListView currentUser={user.data}/>
+              </PrivateRoute>
+              <PrivateRoute exact path={"/favs"} isLoggedIn={isLoggedIn}>
+                <FavsView currentUser={user.data}/>
               </PrivateRoute>
               <PrivateRoute exact path={"/:id"} isLoggedIn={isLoggedIn}>
-                <ProfileViewWithRouter/>
+                <ProfileWithRouter/>
               </PrivateRoute>
             </Switch>
           </div>

@@ -15,7 +15,7 @@ class Tabs extends Component {
     const { labels, activeTab, onClickTabItem } = this.props;
     const classNames = "col-6 ta-center full-height flex-row ai-center jc-center"
     return (
-      <div className="tab-list flex-row">
+      <div className="tab-list full-width flex-row">
         <ul className="col-12 flex-row jc-between">
           {labels.map((label, i) => {
             return (

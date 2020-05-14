@@ -3,7 +3,6 @@ import Navbar from "../components/Navbar"
 import Section from "../components/Section"
 import Grid from "../components/Grid"
 import Tabs from "../components/Tabs"
-import user from "../data/user.json";
 import TabContent from "../components/TabContent"
 
 export default class FavsView extends Component {
@@ -15,21 +14,25 @@ export default class FavsView extends Component {
   }
 
   render() {
+
+    const { currentUser } = this.props
+
     const headerNavElements = [
-      {href: "", iconClass:"fas fa-user-circle"}, 
-      {href: "", iconClass:"fas fa-sliders-h"}
+      {to: `/${currentUser._id}`, iconClass:"fas fa-user-circle"},
+      {to: "", iconClass:"fas fa-sliders-h"}
     ];
+
     const footerNavElements = [
-      {href: "", iconClass:"fas fa-border-all"}, 
-      {href: "", iconClass:"fas fa-comment-alt"},
-      {href: "", iconClass:"fas fa-star"},
-      {href: "", iconClass:"fas fa-calendar"}
+      {to: "/", iconClass:"fas fa-border-all"}, 
+      {to: "", iconClass:"fas fa-comment-alt"},
+      {to: "/favs", iconClass:"fas fa-star"},
+      {to: "/events", iconClass:"fas fa-calendar"}
     ];
     
-    const fans = user.fans.map((user, i) => {
+    const fans = currentUser.fans.map((user, i) => {
       return {username: "soy fan", img: user.imgUrl, id:  user._id};
     });
-    const favs = user.favs.map((user, i) => {
+    const favs = currentUser.favs.map((user, i) => {
       return {username: "soy fav", img: user.imgUrl, id:  user._id};
     });
     

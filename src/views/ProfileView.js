@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Section from "../components/Section"
 import users from '../data/users.json';
+import { Link } from "react-router-dom";
 
 export default class ProfileView extends Component {
   
@@ -18,12 +19,10 @@ export default class ProfileView extends Component {
       <div className="App__container">
         <Section>
           
-          
           <div className="profile__pic-container">
-            <a className="z-index-1000 pa-tl" href="/"><i className="fas fa-chevron-left fc-pink" aria-hidden="true"></i></a>
-            <img src={foundUser.imgUrl} className="profile__pic-container__pic"/>
+            <Link className="z-index-1000 pa-tl" to="/"><i className="fas fa-chevron-left fc-pink" ></i></Link>
+            <img src={foundUser.imgUrl} className="profile__pic-container__pic" alt={foundUser.username}/>
           </div>
-
 
           <div>
             <div className="flex-row jc-between">
@@ -36,12 +35,12 @@ export default class ProfileView extends Component {
               </div>
               <ul className="flex-row jc-between col-4 pa-1">
                 <li className="col-6 ta-center as-center">
-                  <i id="icon-star" className="fas fa-star fc-pink" aria-hidden="true"></i>
+                  <i id="icon-star" className="fas fa-star fc-pink" ></i>
                 </li>
                 <li className="col-6 ta-center as-center">
-                  <a className="link--disabled" href="">
-                    <i className="fas fa-comment-alt" aria-hidden="true"></i>
-                  </a>
+                  <Link className="link--disabled" to="">
+                    <i className="fas fa-comment-alt" ></i>
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -61,14 +60,6 @@ export default class ProfileView extends Component {
               </li>
             </ul>
           </div>
-
-
-
-
-
-
-
-
 
         </Section>
       </div>
