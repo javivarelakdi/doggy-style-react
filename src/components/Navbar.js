@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
+
 export default class Navbar extends Component {
+
   render() {
     const { elements, isFooter } = this.props;
     return (
@@ -9,10 +11,16 @@ export default class Navbar extends Component {
           <ul className="flex-row jc-between full-height">
             {elements.map((el, i) => {
               return (
-                <li className="pl-1 pr-1 col-3 ta-center as-center" key={i}>
+                <li className="pl-1 pr-1 col-3 ta-center as-center fc-pink" key={i}>
+                  {el.isLink === true ?
                   <Link to={el.to}>
                     <i className={el.iconClass}></i>
                   </Link>
+                  :
+                  <button className="fc-pink" onClick={el.onClick}>
+                    <i className={el.iconClass} ></i>
+                  </button>
+                  }
                 </li>
               );
             })}              

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-class Tab extends Component {
+export default class TabContent extends Component {
   static propTypes = {
     children: PropTypes.instanceOf(Array).isRequired,
     activeTab:  PropTypes.string.isRequired
@@ -22,4 +22,3 @@ class Tab extends Component {
 }
 
 
-export default Tab;

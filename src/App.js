@@ -9,7 +9,7 @@ import apiClient from "./services/apiClient";
 import GridView from "./views/GridView";
 import ProfileView from "./views/ProfileView";
 import FavsView from "./views/FavsView";
-import EventListView from "./views/EventListView";
+import EventsView from "./views/EventsView";
 
 const ProfileWithRouter  = withRouter(ProfileView);
 
@@ -71,13 +71,13 @@ class App extends Component {
                 <Login onLogin={this.handleLogin} />
               </AnonRoute>
               <PrivateRoute exact path={"/"} isLoggedIn={isLoggedIn}>
-                <GridView currentUser={user.data}/>
+                <GridView currentUser={isLoggedIn ? user.data : null}/>
               </PrivateRoute>
               <PrivateRoute exact path={"/events"} isLoggedIn={isLoggedIn}>
-                <EventListView currentUser={user.data}/>
+                <EventsView currentUser={isLoggedIn ? user.data : null}/>
               </PrivateRoute>
               <PrivateRoute exact path={"/favs"} isLoggedIn={isLoggedIn}>
-                <FavsView currentUser={user.data}/>
+                <FavsView currentUser={isLoggedIn ? user.data : null}/>
               </PrivateRoute>
               <PrivateRoute exact path={"/:id"} isLoggedIn={isLoggedIn}>
                 <ProfileWithRouter/>

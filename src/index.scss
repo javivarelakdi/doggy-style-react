@@ -1,7 +1,7 @@
 // sass variables
 
 $pink: #EFA8E4;
-$white: #F7F7F7;
+$white: #fff;
 $blue: #97E5EF;;
 
 $font: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -373,7 +373,7 @@ input {
 // user profile block
 
 .profile__pic-container{
-  height: calc(100vh - 300px);
+  max-height: calc(100vh - 300px);
   overflow: hidden;
   position: relative;
   &__pic{
@@ -382,9 +382,7 @@ input {
     max-width: 100%;
   }
 }
-.profile__pic-container--edit{
-  height: calc(100vh - 430px);
-}
+
 
 // login block img-container
 
