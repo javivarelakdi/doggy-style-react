@@ -15,6 +15,18 @@ class ApiClient {
   login(body) {
     return this.apiClient.post("/login", body);
   }
+
+  getUsers() {
+    return this.apiClient.get("/users");
+  }
+
+  getUser(userId) {
+    return this.apiClient.get(`/users/${userId}`);
+  }
+
+  getEvents() {
+    return this.apiClient.get("/events");
+  }
 }
 
 const apiClient = new ApiClient();

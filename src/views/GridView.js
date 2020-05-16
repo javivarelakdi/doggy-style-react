@@ -2,32 +2,76 @@ import React, { Component } from "react";
 import Navbar from "../components/Navbar"
 import Section from "../components/Section"
 import Grid from "../components/Grid"
-import users from '../data/users.json';
+import IconButton from "../components/IconButton"
+import apiClient from "../services/apiClient";
 
 export default class GridView extends Component {
-  render() {
-    const headerNavElements = [
-      {to: `/${this.props.currentUser._id}`, iconClass:"fas fa-user-circle", isLink: true},
-      {iconClass:"fas fa-sliders-h", isLink: false, onClick: null}
-    ];
-    const footerNavElements = [
-      {to: "/", iconClass:"fas fa-border-all", isLink: true}, 
-      {to: "/", iconClass:"fas fa-comment-alt", isLink: true},
-      {to: "/favs", iconClass:"fas fa-star", isLink: true},
-      {to: "/events", iconClass:"fas fa-calendar", isLink: true}
-    ];
+  
+  state = {
+    users: null,
+    isLoading: true,
+  };
 
-    const data = users.map((user, i) => {
+  componentDidMount() {
+    apiClient
+      .getUsers()
+      .then((users) => {
+        this.setState({
+          isLoading: false,
+          users: users.data,
+        });
+      })
+      .catch((error) => {
+        this.setState({
+          isLoading: false,
+          users: null,
+        });
+      });
+  }
+  
+  render() {
+    const gridData = this.state.users ?
+    this.state.users.map((user, i) => {
       return {username: user.username, img: user.imgUrl, id:  user._id};
-    });
-    
+    })
+    : null;
     return (
       <div className="App__container">
-        <Navbar elements={headerNavElements}></Navbar>
+      {this.state.isLoading && <div> Loading.......</div>}
+      {!this.state.isLoading && (
+        <>
+        <Navbar>
+          <IconButton
+              to={`/${this.props.currentUser._id}`}
+              iconClass="fas fa-user-circle"
+            />
+          <IconButton
+              iconClass="fas fa-sliders-h"
+            />
+        </Navbar>
         <Section hasNav>
-          <Grid data={data}/>
+          <Grid data={gridData}/>
         </Section>
-        <Navbar elements={footerNavElements} isFooter></Navbar>
+        <Navbar isFooter>
+          <IconButton
+            to="/"
+            iconClass="fas fa-border-all"
+          />
+          <IconButton
+            to="/"
+            iconClass="fas fa-comment-alt"
+          />
+          <IconButton
+            to="/favs"
+            iconClass="fas fa-star"
+          />
+          <IconButton
+            to="/events"
+            iconClass="fas fa-calendar"
+          />
+        </Navbar>
+        </>
+      )}
       </div>
     );
   }

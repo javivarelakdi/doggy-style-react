@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-// import apiClient from "../services/resorts";
 
 export default class Login extends Component {
   state = {

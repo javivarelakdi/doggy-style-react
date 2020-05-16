@@ -1,26 +1,17 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 
 
 export default class Navbar extends Component {
 
   render() {
-    const { elements, isFooter } = this.props;
+    const { children, isFooter } = this.props;
     return (
       <nav className={isFooter ? "navbar navbar--footer full-width" : "navbar full-width"}>
           <ul className="flex-row jc-between full-height">
-            {elements.map((el, i) => {
+            {children.map((child, i) => {
               return (
                 <li className="pl-1 pr-1 col-3 ta-center as-center fc-pink" key={i}>
-                  {el.isLink === true ?
-                  <Link to={el.to}>
-                    <i className={el.iconClass}></i>
-                  </Link>
-                  :
-                  <button className="fc-pink" onClick={el.onClick}>
-                    <i className={el.iconClass} ></i>
-                  </button>
-                  }
+                  {child}
                 </li>
               );
             })}              
