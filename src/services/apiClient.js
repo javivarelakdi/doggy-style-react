@@ -27,6 +27,14 @@ class ApiClient {
   getEvents() {
     return this.apiClient.get("/events");
   }
+
+  getEvent(eventId) {
+    return this.apiClient.get(`/events/${eventId}`);
+  }
+
+  postEventAttendee(eventId, body) {
+    return this.apiClient.post(`events/${eventId}/attendee`, body);
+  }
 }
 
 const apiClient = new ApiClient();

@@ -10,8 +10,10 @@ import GridView from "./views/GridView";
 import ProfileView from "./views/ProfileView";
 import FavsView from "./views/FavsView";
 import EventsView from "./views/EventsView";
+import EventView from "./views/EventView";
 
 const ProfileWithRouter  = withRouter(ProfileView);
+const EventWithRouter  = withRouter(EventView);
 
 class App extends Component {
   state = {
@@ -73,6 +75,9 @@ class App extends Component {
               <PrivateRoute exact path={"/"} isLoggedIn={isLoggedIn}>
                 <GridView currentUser={isLoggedIn ? user.data : null}/>
               </PrivateRoute>
+              <PrivateRoute exact path={"/events/:id"} isLoggedIn={isLoggedIn}>
+                <EventWithRouter/>
+              </PrivateRoute>
               <PrivateRoute exact path={"/events"} isLoggedIn={isLoggedIn}>
                 <EventsView currentUser={isLoggedIn ? user.data : null}/>
               </PrivateRoute>
@@ -80,8 +85,8 @@ class App extends Component {
                 <FavsView currentUser={isLoggedIn ? user.data : null}/>
               </PrivateRoute>
               <PrivateRoute exact path={"/:id"} isLoggedIn={isLoggedIn}>
-                <ProfileWithRouter/>
-              </PrivateRoute>
+                <ProfileWithRouter currentUser={isLoggedIn ? user.data : null}/>
+              </PrivateRoute>¡
             </Switch>
           </div>
         )}

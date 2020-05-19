@@ -139,7 +139,7 @@ export default class EventsView extends Component {
               <Field
                 value={this.state.owner}
                 type="hidden"
-                name="endTime"
+                name="owner"
                 />
             </Form>
           </>
