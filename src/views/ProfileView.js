@@ -12,7 +12,12 @@ export default class ProfileView extends Component {
   state = {
     user: null,
     isLoading: true,
-    editing: false
+    editing: false,
+    username:"",
+    about:"",
+    birth:"",
+    breed:"",
+    gender:"",
   };
 
   componentDidMount() {
@@ -126,30 +131,36 @@ export default class ProfileView extends Component {
                 label="name"
                 type="text"
                 name="username"
+                value={user.username}
                 onChange={this.handleChange}
                 />
               <Field
                 label="about"
                 type="text"
                 name="about"
+                value={user.about}
                 onChange={this.handleChange}
                 />
               <Field             
                 label="birth"
                 type="date"
                 name="birth"
+                value={user.birth}
                 onChange={this.handleChange}
                 />
               <Field 
                 label="breed"
                 type="text"
                 name="breed"
+                value={user.breed}
                 onChange={this.handleChange}
                 />
               <Field
                 label="gender"
-                type="text"
+                type="select"
                 name="gender"
+                value={user.gender}
+                options={[{value: "male", text:"male"},{value: "female", text:"female"},{value: "non-binary", text:"non binary"}]}
                 onChange={this.handleChange}
                 />
             </Form>
