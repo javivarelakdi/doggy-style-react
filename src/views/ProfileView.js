@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import Section from "../components/Section"
-import { Link } from "react-router-dom";
-import apiClient from "../services/apiClient";
+import { Link } from "react-router-dom"
+import apiClient from "../services/apiClient"
 import Form from "../components/Form"
 import IconButton from "../components/IconButton"
 import Field from "../components/Field"
+
 
 export default class ProfileView extends Component {
   
@@ -43,9 +44,19 @@ export default class ProfileView extends Component {
     })
   }
 
-  handleSubmit = (e) => {
+  handleEditSubmit = (e) => {
     e.preventDefault();
     return; 
+  };
+
+  handleLogoutSubmit = (e) => {
+    e.preventDefault();
+    apiClient
+      .logout()
+      .then(() => {
+        this.props.history.push("/login", { from: this.props.location })
+      })
+      .catch();
   };
 
   handleChange = (e) => {
@@ -126,7 +137,7 @@ export default class ProfileView extends Component {
             <img src={user.imgUrl} className="profile__pic-container__pic" alt={user.username}/>
             </div>
             <Form 
-              onSubmit={this.handleSubmit}>
+              onSubmit={this.handleEditSubmit}>
               <Field
                 label="name"
                 type="text"
@@ -163,6 +174,10 @@ export default class ProfileView extends Component {
                 options={[{value: "male", text:"male"},{value: "female", text:"female"},{value: "non-binary", text:"non binary"}]}
                 onChange={this.handleChange}
                 />
+            </Form>
+            <Form 
+              onSubmit={this.handleLogoutSubmit} 
+              submitButtonText="logout">
             </Form>
           </>
           }

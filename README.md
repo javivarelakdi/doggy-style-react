@@ -56,7 +56,6 @@ Backend **http://localhost:5000**
 
 | Method | Path                   | description           | Body |
 | :----: | ---------------        | --------------------  | ---- |
-|  GET   | `/protected`           | protected route       |      |
 |  GET   | `/users/:id`           | fetch user profile    |      |
 |  GET   | `/users/`              | fetch users data      |      |
 |  GET   | `/events/:id`          | fetch event profile   |      |

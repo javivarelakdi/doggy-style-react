@@ -76,7 +76,7 @@ class App extends Component {
                 <GridView currentUser={isLoggedIn ? user.data : null}/>
               </PrivateRoute>
               <PrivateRoute exact path={"/events/:id"} isLoggedIn={isLoggedIn}>
-                <EventWithRouter/>
+                <EventWithRouter currentUser={isLoggedIn ? user.data : null}/>
               </PrivateRoute>
               <PrivateRoute exact path={"/events"} isLoggedIn={isLoggedIn}>
                 <EventsView currentUser={isLoggedIn ? user.data : null}/>

@@ -16,6 +16,10 @@ class ApiClient {
     return this.apiClient.post("/login", body);
   }
 
+  logout() {
+    return this.apiClient.get("/logout");
+  }
+
   getUsers() {
     return this.apiClient.get("/users");
   }
@@ -33,8 +37,14 @@ class ApiClient {
   }
 
   postEventAttendee(eventId, body) {
-    return this.apiClient.post(`events/${eventId}/attendee`, body);
+    return this.apiClient.post(`/events/${eventId}/attendee`, body);
   }
+
+  postEvent(eventId, body) {
+    return this.apiClient.post(`/events/${eventId}`, body);
+  }
+
+  
 }
 
 const apiClient = new ApiClient();

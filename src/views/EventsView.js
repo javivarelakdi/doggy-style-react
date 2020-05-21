@@ -38,8 +38,13 @@ export default class EventsView extends Component {
       });
   }
 
-  checkIfUserAttends = () => {
-    return this.state.events.attendees.filter(att => att._id === this.props.currentUser._id);
+  checkIfUserAttends = (event) => {
+    if (event.owner._id === this.props.currentUser._id) {
+      return true
+    } else {
+      const isAttending = event.attendees.filter(att => att._id === this.props.currentUser._id);
+      return isAttending.length ? true : false;
+    }
   }
 
   changeScreen = () => {
@@ -90,7 +95,7 @@ export default class EventsView extends Component {
                   timeSlot={`${event.initTime} - ${event.endTime}`}
                   location="2km away"
                   attendees={event.attendees.length}
-                  isUserAttending={this.checkIfUserAttends}
+                  isUserAttending={this.checkIfUserAttends(event)}
                   ownerName={event.owner.username}
                   ownerImgUrl={event.owner.imgUrl}
                   id={event._id}
