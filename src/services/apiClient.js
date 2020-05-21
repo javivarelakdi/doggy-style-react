@@ -20,6 +20,10 @@ class ApiClient {
     return this.apiClient.get("/logout");
   }
 
+  signup(body) {
+    return this.apiClient.post("/signup", body);
+  }
+
   getUsers() {
     return this.apiClient.get("/users");
   }

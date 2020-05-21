@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Switch, withRouter } from "react-router-dom";
 
 import Login from "./views/Login";
+import Signup from "./views/Signup";
 
 import { AnonRoute, PrivateRoute} from "./components";
 
@@ -58,6 +59,31 @@ class App extends Component {
       });
   };
 
+  handleSignup = ({ username, password, imgUrl, breed, gender, about, birth }) => {
+    apiClient
+      .signup({ 
+        username, 
+        password,
+        imgUrl,
+        breed,
+        gender,
+        about,
+        birth
+      })
+      .then(({ data: user }) => {
+        this.setState({
+          isLoggedIn: true,
+          user
+        });
+      })
+      .catch((error) => {
+        this.setState({
+          isLoggedIn: false,
+          user: null
+        });
+      });
+  };
+
   handleLogout = () => {
     apiClient
       .logout()
@@ -83,6 +109,9 @@ class App extends Component {
               {/* <Route exact path={"/"} component={Home} /> */}
               <AnonRoute exact path={"/login"} isLoggedIn={isLoggedIn}>
                 <Login onLogin={this.handleLogin} />
+              </AnonRoute>
+              <AnonRoute exact path={"/signup"} isLoggedIn={isLoggedIn}>
+                <Signup onSignup={this.handleSignup} />
               </AnonRoute>
               <PrivateRoute exact path={"/"} isLoggedIn={isLoggedIn}>
                 <GridView currentUser={user}/>

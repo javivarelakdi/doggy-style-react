@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 
 
 export default class Field extends Component {
@@ -7,7 +7,7 @@ export default class Field extends Component {
   render() {
     const { label, type, name, value, onChange, options } = this.props
     return (
-      <Fragment>
+      <>
       { type === "hidden" ?
         <input name={name} type="hidden" value={value}/>
       : 
@@ -34,7 +34,7 @@ export default class Field extends Component {
           }
         </li>
       }
-      </Fragment>
+      </>
     );
   }
 }
