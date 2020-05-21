@@ -28,12 +28,24 @@ class ApiClient {
     return this.apiClient.get(`/users/${userId}`);
   }
 
+  editUser(userId, body) {
+    return this.apiClient.post(`/users/${userId}`, body);
+  }
+
+  postUserFav(targetId, body) {
+    return this.apiClient.post(`/users/favs/${targetId}`, body);
+  }
+
   getEvents() {
     return this.apiClient.get("/events");
   }
 
   getEvent(eventId) {
     return this.apiClient.get(`/events/${eventId}`);
+  }
+
+  deleteEvent(eventId) {
+    return this.apiClient.delete(`/events/${eventId}`);
   }
 
   postEventAttendee(eventId, body) {

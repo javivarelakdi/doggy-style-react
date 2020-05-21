@@ -5,10 +5,39 @@ import Grid from "../components/Grid"
 import Tabs from "../components/Tabs"
 import TabContent from "../components/TabContent"
 import IconButton from "../components/IconButton"
+import apiClient from "../services/apiClient"
 
 export default class FavsView extends Component {
   
-  state = {activeTab : "following"}
+  state = {
+    activeTab : "following",
+    isLoading: true,
+    favs:[],
+    fans:[]
+  }
+
+  componentDidMount() {
+    apiClient
+      .getUser(this.props.currentUser._id)
+      .then((user) => {
+        const fans = user.data.fans.map((fan) => {
+          return {username: fan.username, img: fan.imgUrl, id:  fan._id};
+        });
+        const favs = user.data.favs.map((fav) => {
+          return {username: fav.username, img: fav.imgUrl, id:  fav._id};
+        });
+        this.setState({
+          isLoading: false,
+          favs,
+          fans
+        });
+      })
+      .catch((error) => {
+        this.setState({
+          isLoading: false
+        });
+      });
+  }
 
   onClickTabItem = (tab) => {
     this.setState({ activeTab: tab });
@@ -16,14 +45,7 @@ export default class FavsView extends Component {
 
   render() {
 
-    const { currentUser } = this.props
-    
-    const fans = currentUser.fans.map((user, i) => {
-      return {username: user.username, img: user.imgUrl, id:  user._id};
-    });
-    const favs = currentUser.favs.map((user, i) => {
-      return {username: user.username, img: user.imgUrl, id:  user._id};
-    });
+    const {favs, fans, activeTab} = this.state;
     
     return (
       <div className="App__container">
@@ -38,10 +60,10 @@ export default class FavsView extends Component {
         </Navbar>
         <Tabs 
           labels={["following", "followers"]} 
-          activeTab={this.state.activeTab} 
+          activeTab={activeTab} 
           onClickTabItem={this.onClickTabItem}/>
         <Section hasNav hasTabs>
-          <TabContent activeTab={this.state.activeTab}>
+          <TabContent activeTab={activeTab}>
             <div label="following">
               <Grid data={favs} columns={2}/>
             </div>

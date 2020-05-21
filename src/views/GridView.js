@@ -8,7 +8,7 @@ import apiClient from "../services/apiClient";
 export default class GridView extends Component {
   
   state = {
-    users: null,
+    users: [],
     isLoading: true,
   };
 
@@ -16,25 +16,28 @@ export default class GridView extends Component {
     apiClient
       .getUsers()
       .then((users) => {
+        const formatUsers = users.data.map((user, i) => {
+          return {username: user.username, img: user.imgUrl, id:  user._id};
+        })
         this.setState({
           isLoading: false,
-          users: users.data,
+          users: formatUsers
         });
       })
       .catch((error) => {
         this.setState({
           isLoading: false,
-          users: null,
+          users: []
         });
       });
   }
+
+  formatUsers() {
+
+  }
   
   render() {
-    const gridData = this.state.users ?
-    this.state.users.map((user, i) => {
-      return {username: user.username, img: user.imgUrl, id:  user._id};
-    })
-    : null;
+
     return (
       <div className="App__container">
       {this.state.isLoading && <div> Loading.......</div>}
@@ -50,7 +53,7 @@ export default class GridView extends Component {
             />
         </Navbar>
         <Section hasNav>
-          <Grid data={gridData}/>
+          <Grid data={this.state.users}/>
         </Section>
         <Navbar isFooter>
           <IconButton

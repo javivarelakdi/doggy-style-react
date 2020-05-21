@@ -93,6 +93,16 @@ export default class EventView extends Component {
       .catch(); 
   };
 
+  handleDeleteSubmit = (e) => {
+    e.preventDefault();
+    apiClient
+      .deleteEvent(this.props.match.params.id)
+      .then(() => {    
+        this.props.history.push("/events", { from: this.props.location })
+      })
+      .catch(); 
+  } 
+
   render() {
     const { event, isLoading, editing, name, description, date, initTime, endTime } = this.state;
       
@@ -211,6 +221,10 @@ export default class EventView extends Component {
               type="hidden"
               name="locId"
               />
+          </Form>
+          <Form 
+            onSubmit={this.handleDeleteSubmit} 
+            submitButtonText="cancel event">
           </Form>
         </>
         }

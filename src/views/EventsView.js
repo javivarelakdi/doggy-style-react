@@ -16,8 +16,7 @@ export default class EventsView extends Component {
     date:"",
     initTime:"",
     endTime:"",
-    owner: this.props.currentUser._id,
-    events:null,
+    events:[],
     isLoading:true
   }
 
@@ -27,13 +26,13 @@ export default class EventsView extends Component {
       .then((events) => {
         this.setState({
           isLoading: false,
-          events: events.data,
+          events: events.data
         });
       })
       .catch((error) => {
         this.setState({
           isLoading: false,
-          events: null,
+          events: []
         });
       });
   }
@@ -57,7 +56,7 @@ export default class EventsView extends Component {
     e.preventDefault();
     apiClient
       .createEvent({
-        owner: this.props.currentUser._id,
+        owner: this.props.currentUser,
         name: this.state.name,
         description: this.state.descripton,
         date: this.state.date,
@@ -66,7 +65,7 @@ export default class EventsView extends Component {
       })
       .then((event) => {    
         this.setState({
-          events: event.data,
+          events: [...this.state.events, event.data],
           screen: "list"
         });
       })
@@ -109,7 +108,7 @@ export default class EventsView extends Component {
                   description={event.description}
                   timeSlot={`${event.initTime} - ${event.endTime}`}
                   location="2km away"
-                  attendees={event.attendees.length}
+                  attendees={event.attendees ? event.attendees.length : 0}
                   isUserAttending={this.checkIfUserAttends(event)}
                   ownerName={event.owner.username}
                   ownerImgUrl={event.owner.imgUrl}
@@ -155,11 +154,6 @@ export default class EventsView extends Component {
                 type="time"
                 name="endTime"
                 onChange={this.handleChange}
-                />
-              <Field
-                value={this.state.owner}
-                type="hidden"
-                name="owner"
                 />
             </Form>
           </>

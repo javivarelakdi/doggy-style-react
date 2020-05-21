@@ -14,20 +14,21 @@ export default class ProfileView extends Component {
     user: null,
     isLoading: true,
     editing: false,
-    username:"",
-    about:"",
-    birth:"",
-    breed:"",
-    gender:"",
+    isFav: false
   };
 
   componentDidMount() {
     apiClient
       .getUser(this.props.match.params.id)
       .then((user) => {
+        let userFans = [];
+        userFans = user.data.fans.filter((fan) => {
+          return fan._id === this.props.currentUser._id
+        }) 
         this.setState({
           isLoading: false,
           user: user.data,
+          isFav: userFans.length > 0 ? true : false,
         });
       })
       .catch((error) => {
@@ -46,24 +47,53 @@ export default class ProfileView extends Component {
 
   handleEditSubmit = (e) => {
     e.preventDefault();
-    return; 
+    const {about, birth, breed, gender, imgUrl} = this.state.user;
+    apiClient
+      .editUser(this.props.match.params.id, {
+        imgUrl,
+        about,
+        birth,
+        breed,
+        gender
+      })
+      .then((event) => {    
+        this.setState({
+          event: event.data,
+          editing: false
+        });
+      })
+      .catch(); 
   };
 
   handleLogoutSubmit = (e) => {
     e.preventDefault();
-    apiClient
-      .logout()
-      .then(() => {
-        this.props.history.push("/login", { from: this.props.location })
-      })
-      .catch();
+    this.props.logout();
   };
 
   handleChange = (e) => {
     this.setState({
-      [e.target.name]: e.target.value,
+      user: {
+        ...this.state.user,
+        [e.target.name]: e.target.value,
+      }
     });
   };
+
+  handleToggleFav = () => {
+    apiClient
+      .postUserFav(this.props.match.params.id, {isFav: !this.state.isFav})
+      .then((user) => {    
+        let userFans = [];
+        userFans = user.data.fans.filter((fan) => {
+          return fan._id === this.props.currentUser._id
+        }) 
+        this.setState({
+          user: user.data,
+          isFav: userFans.length > 0 ? true : false
+        });
+      })
+      .catch(); 
+  }
 
   render() {
     const { user, isLoading, editing } = this.state;
@@ -80,13 +110,6 @@ export default class ProfileView extends Component {
               iconClass="fas fa-chevron-left"
               to="/"
             />
-            {this.props.match.params.id === this.props.currentUser._id &&
-              <IconButton
-              buttonClass="z-index-1000 pa-tr"
-              iconClass="fas fa-edit"
-              onClick= {this.changeScreen}
-            />
-            }
             <img src={user.imgUrl} className="profile__pic-container__pic" alt={user.username}/>
             </div>
 
@@ -99,15 +122,33 @@ export default class ProfileView extends Component {
                   <i className="pr-small fs-small fas fa-circle fc-pink "></i>
                   <span className="fs-small">connected</span>
                 </div>
-                <ul className="flex-row jc-between col-4 pa-1">
-                  <li className="col-6 ta-center as-center">
-                    <i id="icon-star" className="fas fa-star fc-pink" ></i>
-                  </li>
-                  <li className="col-6 ta-center as-center">
-                    <Link className="link--disabled" to="">
-                      <i className="fas fa-comment-alt" ></i>
-                    </Link>
-                  </li>
+                <ul className={
+                  `flex-row col-4 pa-1 ${this.props.match.params.id === this.props.currentUser._id 
+                    ? "jc-end" 
+                    : "jc-between"}`
+                }>
+                {this.props.match.params.id === this.props.currentUser._id ?
+                <li className="col-6 ta-center as-center">
+                <IconButton
+                  iconClass="fas fa-edit"
+                  onClick= {this.changeScreen}
+                />
+                </li>
+                :
+                <>
+                <li className="col-6 ta-center as-center">
+                  <IconButton
+                    iconClass={`${this.state.isFav ? "fas" : "far"}  fa-star`}
+                    onClick= {this.handleToggleFav}
+                  />
+                </li>
+                <li className="col-6 ta-center as-center">
+                  <Link className="link--disabled" to="">
+                    <i className="fas fa-comment-alt" ></i>
+                  </Link>
+                </li>
+                </>
+                }
                 </ul>
               </div>
               <p className="pr-1 pl-1 pb-1">{user.about}</p>
@@ -138,13 +179,6 @@ export default class ProfileView extends Component {
             </div>
             <Form 
               onSubmit={this.handleEditSubmit}>
-              <Field
-                label="name"
-                type="text"
-                name="username"
-                value={user.username}
-                onChange={this.handleChange}
-                />
               <Field
                 label="about"
                 type="text"

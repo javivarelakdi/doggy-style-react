@@ -18,7 +18,7 @@ export default class Field extends Component {
             className="col-8 select" 
             name={name}
             value={value}
-            onChange={onChange}>
+            onChange={e => onChange(e)}>
             {options.map((op, i) => {
               return <option key={i} value={op.value}>{op.text}</option> 
             })

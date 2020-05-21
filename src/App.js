@@ -25,7 +25,7 @@ class App extends Component {
   componentDidMount() {
     apiClient
       .whoami()
-      .then((user) => {
+      .then(({data: user}) => {
         this.setState({
           isLoading: false,
           isLoggedIn: true,
@@ -47,15 +47,27 @@ class App extends Component {
       .then(({ data: user }) => {
         this.setState({
           isLoggedIn: true,
-          user,
+          user
         });
       })
       .catch((error) => {
         this.setState({
           isLoggedIn: false,
-          user: null,
+          user: null
         });
       });
+  };
+
+  handleLogout = () => {
+    apiClient
+      .logout()
+      .then(() => {
+        this.setState({
+          isLoggedIn: false,
+          user: null
+        });
+      })
+      .catch();
   };
 
   
@@ -73,19 +85,19 @@ class App extends Component {
                 <Login onLogin={this.handleLogin} />
               </AnonRoute>
               <PrivateRoute exact path={"/"} isLoggedIn={isLoggedIn}>
-                <GridView currentUser={isLoggedIn ? user.data : null}/>
+                <GridView currentUser={user}/>
               </PrivateRoute>
               <PrivateRoute exact path={"/events/:id"} isLoggedIn={isLoggedIn}>
-                <EventWithRouter currentUser={isLoggedIn ? user.data : null}/>
+                <EventWithRouter currentUser={user}/>
               </PrivateRoute>
               <PrivateRoute exact path={"/events"} isLoggedIn={isLoggedIn}>
-                <EventsView currentUser={isLoggedIn ? user.data : null}/>
+                <EventsView currentUser={user}/>
               </PrivateRoute>
               <PrivateRoute exact path={"/favs"} isLoggedIn={isLoggedIn}>
-                <FavsView currentUser={isLoggedIn ? user.data : null}/>
+                <FavsView currentUser={user}/>
               </PrivateRoute>
               <PrivateRoute exact path={"/:id"} isLoggedIn={isLoggedIn}>
-                <ProfileWithRouter currentUser={isLoggedIn ? user.data : null}/>
+                <ProfileWithRouter currentUser={user} logout={this.handleLogout}/>
               </PrivateRoute>¡
             </Switch>
           </div>
