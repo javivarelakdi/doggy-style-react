@@ -76,7 +76,7 @@ export default class EventView extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     apiClient
-      .postEvent(this.props.match.params.id, {
+      .editEvent(this.props.match.params.id, {
         locId: this.state.event.location._id,
         name: this.state.name,
         description: this.state.description,

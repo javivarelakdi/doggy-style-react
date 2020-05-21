@@ -40,8 +40,12 @@ class ApiClient {
     return this.apiClient.post(`/events/${eventId}/attendee`, body);
   }
 
-  postEvent(eventId, body) {
+  editEvent(eventId, body) {
     return this.apiClient.post(`/events/${eventId}`, body);
+  }
+
+  createEvent(body) {
+    return this.apiClient.post("/events/new", body);
   }
 
   

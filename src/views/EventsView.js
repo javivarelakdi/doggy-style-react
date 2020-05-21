@@ -55,7 +55,22 @@ export default class EventsView extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    return; 
+    apiClient
+      .createEvent({
+        owner: this.props.currentUser._id,
+        name: this.state.name,
+        description: this.state.descripton,
+        date: this.state.date,
+        initTime:this.state.initTime,
+        endTime: this.state.endTime
+      })
+      .then((event) => {    
+        this.setState({
+          events: event.data,
+          screen: "list"
+        });
+      })
+      .catch(); 
   };
 
   handleChange = (e) => {
