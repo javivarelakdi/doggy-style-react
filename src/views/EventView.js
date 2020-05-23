@@ -7,6 +7,8 @@ import { Link } from "react-router-dom"
 import apiClient from "../services/apiClient"
 import Loading from "../components/Loading"
 import Error from "../components/Error"
+import Map from "../components/Map"
+
 
 export default class EventView extends Component {
   
@@ -21,7 +23,7 @@ export default class EventView extends Component {
     date: "",
     initTime:"",
     endTime: "",
-    errorStatus: ""
+    errorStatus: "",
   };
 
   componentDidMount() {
@@ -143,7 +145,7 @@ export default class EventView extends Component {
               onClick= {this.changeScreen}
             />
             }
-            <img src="/images/map.jpg" className="profile__pic-container__pic" alt="location"/>
+            <Map/>
           </div>
           <div >
             <div className="flex-row jc-between">
