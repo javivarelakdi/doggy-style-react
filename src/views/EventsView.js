@@ -1,11 +1,13 @@
-import React, { Component } from "react";
+import React, { Component } from "react"
 import Navbar from "../components/Navbar"
 import Section from "../components/Section"
 import EventCard from "../components/EventCard"
 import Form from "../components/Form"
 import IconButton from "../components/IconButton"
 import Field from "../components/Field"
-import apiClient from "../services/apiClient";
+import apiClient from "../services/apiClient"
+import Loading from "../components/Loading"
+import Error from "../components/Error"
 
 export default class EventsView extends Component {
 
@@ -17,7 +19,8 @@ export default class EventsView extends Component {
     initTime:"",
     endTime:"",
     events:[],
-    isLoading:true
+    isLoading:true,
+    errorStatus: ""
   }
 
   componentDidMount() {
@@ -29,10 +32,10 @@ export default class EventsView extends Component {
           events: events.data
         });
       })
-      .catch((error) => {
+      .catch(({...error}) => {
         this.setState({
           isLoading: false,
-          events: []
+          errorStatus: error.response.status
         });
       });
   }
@@ -69,7 +72,11 @@ export default class EventsView extends Component {
           screen: "list"
         });
       })
-      .catch(); 
+      .catch(({...error}) => {
+        this.setState({
+          errorStatus: error.response.status
+        });
+      });
   };
 
   handleChange = (e) => {
@@ -80,12 +87,13 @@ export default class EventsView extends Component {
 
   render() {
 
-    
+    const { screen, events, isLoading, errorStatus} = this.state;
     return (
       
       <div className="App__container">
-      {this.state.isLoading && <div> Loading.......</div>}
-      {!this.state.isLoading && (
+        {isLoading && <Loading/>}
+        {!isLoading && errorStatus && <Error status={errorStatus}/>}
+        {!isLoading && !errorStatus &&
         <>
         <Navbar>
           <IconButton
@@ -93,14 +101,14 @@ export default class EventsView extends Component {
             iconClass="fas fa-user-circle"
           />
           <IconButton
-            iconClass={this.state.screen === "list" ? "fas fa-plus-circle" : "fas fa-list"}
+            iconClass={screen === "list" ? "fas fa-plus-circle" : "fas fa-list"}
             onClick= {this.changeScreen}
           />
         </Navbar>
         <Section hasNav>
-          { this.state.screen === "list" ?
+          { screen === "list" ?
           <ul className="flex-row pt-1 pr-1 pl-1">
-            {this.state.events.map((event, i) => {
+            { events.map((event, i) => {
               return (
                 <EventCard
                   key={i}
@@ -177,7 +185,8 @@ export default class EventsView extends Component {
             iconClass="fas fa-calendar"
           />
         </Navbar>
-      </>)}
+        </>
+        }
       </div>
     );
   }

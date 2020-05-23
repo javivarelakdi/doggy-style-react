@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from "react"
 import Navbar from "../components/Navbar"
 import Section from "../components/Section"
 import Grid from "../components/Grid"
@@ -6,6 +6,8 @@ import Tabs from "../components/Tabs"
 import TabContent from "../components/TabContent"
 import IconButton from "../components/IconButton"
 import apiClient from "../services/apiClient"
+import Loading from "../components/Loading"
+import Error from "../components/Error"
 
 export default class FavsView extends Component {
   
@@ -13,7 +15,8 @@ export default class FavsView extends Component {
     activeTab : "following",
     isLoading: true,
     favs:[],
-    fans:[]
+    fans:[],
+    errorStatus:""
   }
 
   componentDidMount() {
@@ -32,9 +35,10 @@ export default class FavsView extends Component {
           fans
         });
       })
-      .catch((error) => {
+      .catch(({...error}) => {
         this.setState({
-          isLoading: false
+          isLoading: false,
+          errorStatus: error.response.status
         });
       });
   }
@@ -45,10 +49,14 @@ export default class FavsView extends Component {
 
   render() {
 
-    const {favs, fans, activeTab} = this.state;
+    const {favs, fans, activeTab, isLoading, errorStatus} = this.state;
     
     return (
       <div className="App__container">
+        {isLoading && <Loading/>}
+        {!isLoading && errorStatus && <Error status={errorStatus}/>}
+        {!isLoading && !errorStatus &&
+        <>
         <Navbar>
           <IconButton
               to={`/${this.props.currentUser._id}`}
@@ -90,6 +98,8 @@ export default class FavsView extends Component {
             iconClass="fas fa-calendar"
           />
         </Navbar>
+        </>
+        } 
       </div>
     );
   }

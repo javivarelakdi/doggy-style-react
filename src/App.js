@@ -1,19 +1,16 @@
-import React, { Component } from "react";
-import { Switch, withRouter } from "react-router-dom";
-
-import Login from "./views/Login";
-import Signup from "./views/Signup";
-
-import { AnonRoute, PrivateRoute} from "./components";
-import Loading from "./components/Loading";
-import Error from "./components/Error";
-
-import apiClient from "./services/apiClient";
-import GridView from "./views/GridView";
-import ProfileView from "./views/ProfileView";
-import FavsView from "./views/FavsView";
-import EventsView from "./views/EventsView";
-import EventView from "./views/EventView";
+import React, { Component } from "react"
+import { Switch, withRouter } from "react-router-dom"
+import Login from "./views/Login"
+import Signup from "./views/Signup"
+import { AnonRoute, PrivateRoute} from "./components"
+import Loading from "./components/Loading"
+import Error from "./components/Error"
+import apiClient from "./services/apiClient"
+import GridView from "./views/GridView"
+import ProfileView from "./views/ProfileView"
+import FavsView from "./views/FavsView"
+import EventsView from "./views/EventsView"
+import EventView from "./views/EventView"
 
 const ProfileWithRouter  = withRouter(ProfileView);
 const EventWithRouter  = withRouter(EventView);
@@ -54,7 +51,7 @@ class App extends Component {
           user
         });
       })
-      .catch((error) => {
+      .catch(({...error}) => {
         this.setState({
           isLoading: false,
           errorStatus: error.response.status
@@ -79,7 +76,7 @@ class App extends Component {
           user
         });
       })
-      .catch((error) => {
+      .catch(({...error}) => {
         this.setState({
           isLoading: false,
           errorStatus: error.response.status

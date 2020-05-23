@@ -1,8 +1,8 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import React, { Component } from "react"
+import { Link } from "react-router-dom"
 import Form from "../components/Form"
 import Field from "../components/Field"
-import dogApi from "../services/dogApi";
+import dogApi from "../services/dogApi"
 
 export default class Signup extends Component {
   state = {
@@ -46,9 +46,9 @@ export default class Signup extends Component {
     e.preventDefault();
     const { username, password, imgUrl, breed, gender, about, birth } = this.state;
     const { onSignup } = this.props;
-    if (username !== "" && password !== "") {
+    //if (username !== "" && password !== "") {
       onSignup({ username, password, imgUrl, breed, gender, about, birth });
-    }
+    //}
   };
 
   handleChange = (e) => {

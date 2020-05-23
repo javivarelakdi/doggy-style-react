@@ -1,47 +1,47 @@
-import React, { Component } from "react";
+import React, { Component } from "react"
 import Navbar from "../components/Navbar"
 import Section from "../components/Section"
 import Grid from "../components/Grid"
 import IconButton from "../components/IconButton"
-import apiClient from "../services/apiClient";
+import apiClient from "../services/apiClient"
+import Loading from "../components/Loading"
+import Error from "../components/Error"
 
 export default class GridView extends Component {
   
   state = {
     users: [],
     isLoading: true,
+    errorStatus: ""
   };
 
   componentDidMount() {
     apiClient
       .getUsers()
       .then((users) => {
-        const formatUsers = users.data.map((user, i) => {
+        const formattedUsers = users.data.map((user, i) => {
           return {username: user.username, img: user.imgUrl, id:  user._id};
         })
         this.setState({
           isLoading: false,
-          users: formatUsers
+          users: formattedUsers
         });
       })
-      .catch((error) => {
+      .catch(({...error}) => {
         this.setState({
           isLoading: false,
-          users: []
+          errorStatus: error.response.status
         });
       });
   }
-
-  formatUsers() {
-
-  }
   
   render() {
-
+    const {users, isLoading, errorStatus} = this.state;
     return (
       <div className="App__container">
-      {this.state.isLoading && <div> Loading.......</div>}
-      {!this.state.isLoading && (
+        {isLoading && <Loading/>}
+        {!isLoading && errorStatus && <Error status={errorStatus}/>}
+        {!isLoading && !errorStatus &&
         <>
         <Navbar>
           <IconButton
@@ -53,7 +53,7 @@ export default class GridView extends Component {
             />
         </Navbar>
         <Section hasNav>
-          <Grid data={this.state.users}/>
+          <Grid data={users}/>
         </Section>
         <Navbar isFooter>
           <IconButton
@@ -74,7 +74,7 @@ export default class GridView extends Component {
           />
         </Navbar>
         </>
-      )}
+        }
       </div>
     );
   }

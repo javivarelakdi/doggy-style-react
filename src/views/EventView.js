@@ -1,10 +1,12 @@
-import React, { Component } from "react";
+import React, { Component } from "react"
 import Section from "../components/Section"
 import Form from "../components/Form"
 import IconButton from "../components/IconButton"
 import Field from "../components/Field"
-import { Link } from "react-router-dom";
-import apiClient from "../services/apiClient";
+import { Link } from "react-router-dom"
+import apiClient from "../services/apiClient"
+import Loading from "../components/Loading"
+import Error from "../components/Error"
 
 export default class EventView extends Component {
   
@@ -18,7 +20,8 @@ export default class EventView extends Component {
     description: "",
     date: "",
     initTime:"",
-    endTime: ""
+    endTime: "",
+    errorStatus: ""
   };
 
   componentDidMount() {
@@ -39,9 +42,10 @@ export default class EventView extends Component {
           endTime: event.data.endTime
         });
       })
-      .catch((error) => {
+      .catch(({...error}) => {
         this.setState({
-          isLoading: false
+          isLoading: false,
+          errorStatus: error.response.status
         });
       });
   }
@@ -70,7 +74,11 @@ export default class EventView extends Component {
           isAttending: attending.length > 0 ? true : false
         });
       })
-      .catch(); 
+      .catch(({...error}) => {
+        this.setState({
+          errorStatus: error.response.status
+        });
+      });
   }
 
   handleSubmit = (e) => {
@@ -90,7 +98,11 @@ export default class EventView extends Component {
           editing: false
         });
       })
-      .catch(); 
+      .catch(({...error}) => {
+        this.setState({
+          errorStatus: error.response.status
+        });
+      });
   };
 
   handleDeleteSubmit = (e) => {
@@ -100,19 +112,24 @@ export default class EventView extends Component {
       .then(() => {    
         this.props.history.push("/events", { from: this.props.location })
       })
-      .catch(); 
+      .catch(({...error}) => {
+        this.setState({
+          errorStatus: error.response.status
+        });
+      });
   } 
 
   render() {
-    const { event, isLoading, editing, name, description, date, initTime, endTime } = this.state;
+    const { event, isLoading, editing, name, description, date, initTime, endTime, errorStatus } = this.state;
       
     return (
       <div className="App__container">
-        {isLoading && <div> Loading.......</div>}
-        {!isLoading && event && (
+        {isLoading && <Loading/>}
+        {!isLoading && errorStatus && <Error status={errorStatus}/>}
+        {!isLoading && event && !errorStatus &&
         <Section>
-        {!editing ?
-        <>
+          {!editing ?
+          <>
           <div className="profile__pic-container">
             <IconButton
               buttonClass="z-index-1000 pa-tl"
@@ -169,9 +186,9 @@ export default class EventView extends Component {
               })}
             </ul>
           </div>
-        </>
-        :
-        <>
+          </>
+          :
+          <>
           <div className="profile__pic-container">
             <IconButton
             buttonClass="z-index-1000 pa-tl"
@@ -226,10 +243,10 @@ export default class EventView extends Component {
             onSubmit={this.handleDeleteSubmit} 
             submitButtonText="cancel event">
           </Form>
-        </>
-        }
+          </>
+          }
         </Section>
-        )}
+        }
       </div>
     );
   }

@@ -5,6 +5,8 @@ import apiClient from "../services/apiClient"
 import Form from "../components/Form"
 import IconButton from "../components/IconButton"
 import Field from "../components/Field"
+import Loading from "../components/Loading"
+import Error from "../components/Error"
 
 
 export default class ProfileView extends Component {
@@ -14,7 +16,8 @@ export default class ProfileView extends Component {
     user: null,
     isLoading: true,
     editing: false,
-    isFav: false
+    isFav: false,
+    errorStatus: ""
   };
 
   componentDidMount() {
@@ -31,10 +34,10 @@ export default class ProfileView extends Component {
           isFav: userFans.length > 0 ? true : false,
         });
       })
-      .catch((error) => {
+      .catch(({...error}) => {
         this.setState({
           isLoading: false,
-          user: null,
+          errorStatus: error.response.status
         });
       });
   }
@@ -62,7 +65,11 @@ export default class ProfileView extends Component {
           editing: false
         });
       })
-      .catch(); 
+      .catch(({...error}) => {
+        this.setState({
+          errorStatus: error.response.status
+        });
+      }); 
   };
 
   handleLogoutSubmit = (e) => {
@@ -96,11 +103,12 @@ export default class ProfileView extends Component {
   }
 
   render() {
-    const { user, isLoading, editing } = this.state;
+    const { user, isLoading, editing, errorStatus } = this.state;
     return (
       <div className="App__container">
-        {isLoading && <div> Loading.......</div>}
-        {!isLoading && (
+        {isLoading && <Loading/>}
+        {!isLoading && errorStatus && <Error status={errorStatus}/>}
+        {!isLoading && !errorStatus &&
         <Section>
           {!editing ?
           <>
@@ -216,7 +224,7 @@ export default class ProfileView extends Component {
           </>
           }
         </Section>
-        )}
+        }
       </div>
     );
   }
