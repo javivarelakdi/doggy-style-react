@@ -2,17 +2,45 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import Form from "../components/Form"
 import Field from "../components/Field"
+import dogApi from "../services/dogApi";
 
 export default class Signup extends Component {
   state = {
     username: "",
     password: "",
-    imgUrl: "https://images.dog.ceo/breeds/terrier-russell/jack2.jpg",
+    imgUrl: "",
     breed: "",
     gender: "",
     about: "",
-    birth: ""
+    birth: "",
+    breedOptions:[],
+    loading:true
   };
+
+  componentDidMount() {
+    dogApi
+      .listAll()
+      .then(({data: response}) => {
+        
+        this.setState({
+          isLoading: false,
+          breedOptions: this.displayDogOptions(response.message)
+        });
+      })
+      .catch((error) => {
+        this.setState({
+          isLoading: false
+        });
+      });
+  }
+
+  displayDogOptions = (response) =>{
+    const dogArray = Object.keys(response);
+    const dogOptions = dogArray.map((dogOption) => {
+      return {value: dogOption, text:dogOption}
+    })
+    return dogOptions;
+  }
 
   handleSubmit = (e) => {
     e.preventDefault();
@@ -27,6 +55,16 @@ export default class Signup extends Component {
     this.setState({
       [e.target.name]: e.target.value,
     });
+    if (e.target.name === "breed") {
+      dogApi
+      .getRandomImage(e.target.value)
+      .then(({data: response}) => {
+        this.setState({
+            imgUrl: response.message
+        });
+      })
+      .catch();
+    }
   };
 
   render() {
@@ -68,9 +106,10 @@ export default class Signup extends Component {
             />
           <Field 
             label="breed"
-            type="text"
+            type="select"
             name="breed"
             value={breed}
+            options={this.state.breedOptions}
             onChange={this.handleChange}
             />
           <Field

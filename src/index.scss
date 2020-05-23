@@ -2,7 +2,7 @@
 
 $pink: #EFA8E4;
 $white: #fff;
-$blue: #97E5EF;;
+$blue: #97E5EF;
 
 $font: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
@@ -429,3 +429,7 @@ input {
 }
 
 .z-index-1000{z-index: 1000}
+
+.error-box{
+  border: 5px solid $pink;
+}

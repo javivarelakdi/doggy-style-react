@@ -11,9 +11,9 @@ export default class Login extends Component {
     e.preventDefault();
     const { username, password } = this.state;
     const { onLogin } = this.props;
-    if (username !== "" && password !== "") {
+    //if (username !== "" && password !== "") {
       onLogin({ username, password });
-    }
+    //}
   };
 
   cleanForm = () => {

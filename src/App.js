@@ -5,6 +5,8 @@ import Login from "./views/Login";
 import Signup from "./views/Signup";
 
 import { AnonRoute, PrivateRoute} from "./components";
+import Loading from "./components/Loading";
+import Error from "./components/Error";
 
 import apiClient from "./services/apiClient";
 import GridView from "./views/GridView";
@@ -21,6 +23,7 @@ class App extends Component {
     isLoggedIn: false,
     user: null,
     isLoading: true,
+    errorStatus:""
   };
 
   componentDidMount() {
@@ -33,11 +36,11 @@ class App extends Component {
           user,
         });
       })
-      .catch((error) => {
+      .catch(({...error}) => {
         this.setState({
           isLoading: false,
           isLoggedIn: false,
-          user: null,
+          user:null
         });
       });
   }
@@ -53,8 +56,8 @@ class App extends Component {
       })
       .catch((error) => {
         this.setState({
-          isLoggedIn: false,
-          user: null
+          isLoading: false,
+          errorStatus: error.response.status
         });
       });
   };
@@ -78,8 +81,8 @@ class App extends Component {
       })
       .catch((error) => {
         this.setState({
-          isLoggedIn: false,
-          user: null
+          isLoading: false,
+          errorStatus: error.response.status
         });
       });
   };
@@ -99,11 +102,12 @@ class App extends Component {
   
   render() {
     
-    const { isLoggedIn, isLoading, user } = this.state;
+    const { isLoggedIn, isLoading, user, errorStatus} = this.state;
     return (
-      <div>
-        {isLoading && <div> Loading.......</div>}
-        {!isLoading && (
+      <>
+        {isLoading && <Loading/>}
+        {!isLoading && errorStatus && <Error status={errorStatus}/>}
+        {!isLoading && !errorStatus &&
           <div className="App">
             <Switch>
               {/* <Route exact path={"/"} component={Home} /> */}
@@ -130,8 +134,8 @@ class App extends Component {
               </PrivateRoute>¡
             </Switch>
           </div>
-        )}
-      </div>
+        }
+      </>
     );
   }
 }
