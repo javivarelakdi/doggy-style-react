@@ -16,13 +16,6 @@ export default class Login extends Component {
     //}
   };
 
-  cleanForm = () => {
-    this.setState({
-      username: "",
-      password: "",
-    });
-  };
-
   handleChange = (e) => {
     this.setState({
       [e.target.name]: e.target.value,
@@ -44,6 +37,7 @@ export default class Login extends Component {
         <div className="pb-1 ta-center col-12">
           <i className="fas fa-user fa-sm mr-1"></i>
           <input
+            required
             type="text"
             name="username"
             id="username"
@@ -55,6 +49,7 @@ export default class Login extends Component {
         <div className=" pb-1 ta-center col-12">
           <i className="fas fa-lock fa-sm mr-1"></i>
           <input
+            required
             type="password"
             name="password"
             id="password"

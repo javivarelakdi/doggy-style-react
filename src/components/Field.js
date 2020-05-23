@@ -5,16 +5,17 @@ export default class Field extends Component {
 
 
   render() {
-    const { label, type, name, value, onChange, options } = this.props
+    const { label, type, name, value, onChange, options, required, validationError } = this.props
     return (
       <>
       { type === "hidden" ?
-        <input name={name} type="hidden" value={value}/>
+        <input required={required} name={name} type="hidden" value={value}/>
       : 
         <li className="flex-row col-12 bb-white pb-1 pt-1">
           <label className="col-4">{label}</label>
           {type === "select" ?
           <select 
+            required = {required}
             className="col-8 select" 
             name={name}
             value={value}
@@ -25,12 +26,18 @@ export default class Field extends Component {
             }
           </select>
           : 
-          <input 
-            type={type} 
-            className="col-8" 
-            value={value}
-            name={name} 
-            onChange={onChange}/>
+          <div className="col-8 flex-row">
+            <input 
+              required = {required}
+              type={type} 
+              className={`col-12 ${validationError && "input-error"}`}
+              value={value}
+              name={name} 
+              onChange={onChange}/>
+            {validationError &&
+            <p className="fc-pink fs-small fw-bold">{validationError}</p>
+            }
+          </div>
           }
         </li>
       }

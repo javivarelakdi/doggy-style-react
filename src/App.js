@@ -93,7 +93,11 @@ class App extends Component {
           user: null
         });
       })
-      .catch();
+      .catch(({...error}) => {
+        this.setState({
+          errorStatus: error.response.status
+        });
+      });
   };
 
   

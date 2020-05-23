@@ -5,7 +5,7 @@ export default class Form extends Component {
 
 
   render() {
-    const { onSubmit, children, submitButtonText} = this.props
+    const { onSubmit, children, submitButtonText, disabled } = this.props
     return (
       <form onSubmit={onSubmit}>
         {children && 
@@ -17,8 +17,9 @@ export default class Form extends Component {
         }
         <div className="flex-row pr-1 pl-1 pb-1">
           <button 
-            className="button col-12" 
-            type="submit">
+            className={`button col-12 ${disabled && "button--disabled"}`} 
+            type="submit"
+            disabled={disabled}>
             {submitButtonText ? submitButtonText : "Save"}
           </button>
         </div>

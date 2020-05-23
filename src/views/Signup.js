@@ -14,14 +14,19 @@ export default class Signup extends Component {
     about: "",
     birth: "",
     breedOptions:[],
-    loading:true
+    loading:true,
+    usernameValid: false,
+    passwordValid: false,
+    aboutValid: false,
+    birthValid: false,
+    formValid: false,
+    formErrors: {username: "", password: "", about: "", birth: ""}
   };
 
   componentDidMount() {
     dogApi
       .listAll()
       .then(({data: response}) => {
-        
         this.setState({
           isLoading: false,
           breedOptions: this.displayDogOptions(response.message)
@@ -52,9 +57,12 @@ export default class Signup extends Component {
   };
 
   handleChange = (e) => {
-    this.setState({
-      [e.target.name]: e.target.value,
-    });
+    const fieldName = e.target.name;
+    const value = e.target.value;
+    this.setState(
+      {[e.target.name]: e.target.value},
+      () => { this.validateField(fieldName, value) }
+    );
     if (e.target.name === "breed") {
       dogApi
       .getRandomImage(e.target.value)
@@ -67,16 +75,58 @@ export default class Signup extends Component {
     }
   };
 
+  validateField = (fieldName, value) => {
+    let {formErrors, usernameValid, passwordValid, birthValid, aboutValid } = this.state
+    
+    const today = new Date();
+  
+    switch(fieldName) {
+      case 'username':
+        usernameValid = value.match(/^(?=[a-zA-Z0-9._]{8,20}$)(?!.*[_.]{2})[^_.].*[^_.]$/i); 
+        formErrors.username = usernameValid ? '' : 'username is not 8 to 20 characters or has spaces or strange characters';
+        break;
+      case 'password':
+        passwordValid = value.length > 6;
+        formErrors.password = passwordValid ? '': 'password is lower than 6 characters';
+        break;
+      case 'birth':
+        birthValid = value < today;
+        formErrors.birth = birthValid ? '': 'birth date must be a day in the past';
+        break;
+      case 'about':
+        aboutValid = value.length > 6 && value.length < 120;
+        formErrors.about = aboutValid ? '': 'about field is lower than 6 or higher than 120 characters';
+        break;
+      default:
+        break;
+    }
+    this.setState({
+      formErrors,
+      usernameValid,
+      passwordValid,
+      birthValid,
+      aboutValid
+    }, this.validateForm);
+  }
+
+  validateForm = () => {
+    let { usernameValid, passwordValid, birthValid, aboutValid } = this.state
+    this.setState({formValid: usernameValid && passwordValid && birthValid && aboutValid});
+  }
+
   render() {
-    const { username, password, imgUrl, breed, gender, about, birth } = this.state;
+    const { username, password, imgUrl, breed, gender, about, birth, formErrors } = this.state;
 
     return (
       <>
         <h1 className="pt-1"><span className="bg-pink fs-big">Signup</span></h1>
         <Form 
           onSubmit={this.handleSubmit}
-          submitButtonText="signup">
+          submitButtonText="signup"
+          disabled={!this.state.formValid}>
           <Field
+            required
+            validationError={formErrors.username}
             label="username"
             type="text"
             name="username"
@@ -84,6 +134,8 @@ export default class Signup extends Component {
             onChange={this.handleChange}
             />
           <Field
+            required
+            validationError={formErrors.password}
             label="password"
             type="password"
             name="password"
@@ -91,13 +143,17 @@ export default class Signup extends Component {
             onChange={this.handleChange}
             />
           <Field
+            required
+            validationError={formErrors.about}
             label="about"
             type="text"
             name="about"
             value={about}
             onChange={this.handleChange}
             />
-          <Field             
+          <Field
+            required
+            validationError={formErrors.birth}            
             label="birth"
             type="date"
             name="birth"
@@ -105,6 +161,7 @@ export default class Signup extends Component {
             onChange={this.handleChange}
             />
           <Field 
+            required
             label="breed"
             type="select"
             name="breed"
@@ -113,6 +170,7 @@ export default class Signup extends Component {
             onChange={this.handleChange}
             />
           <Field
+            required
             label="gender"
             type="select"
             name="gender"
@@ -121,6 +179,7 @@ export default class Signup extends Component {
             onChange={this.handleChange}
             />
           <Field
+            required
             type="hidden"
             name="imgUrl"
             value={imgUrl}

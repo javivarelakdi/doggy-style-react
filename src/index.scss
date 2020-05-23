@@ -275,11 +275,16 @@ i{font-size: $font-size-medium;}
   background: transparent;
 }
 
+.button--disabled{
+  opacity: 0.6;
+}
+
 //links
 
 a{
   text-decoration: none; 
   color: $pink;
+  font-weight: 600;
 }
 
 a.link--disabled{
@@ -289,12 +294,11 @@ a.link--disabled{
 
 //forms
 
-input {
+input, select {
   box-sizing: border-box;
   background-color: $white;
   border: 1px solid $white;
-  padding-left: rem(5px);
-  padding-right: rem(5px);
+  padding: rem(5px);
 }
 
 .textarea{
@@ -302,14 +306,6 @@ input {
 }
 
 //selects
-
-.select {
-  box-sizing: border-box;
-  background-color: $white;
-  border: 1px solid $white;
-  padding-left: rem(5px);
-  padding-right: rem(5px);
-}
 
 .select--button{
   background-color: $pink;
@@ -432,4 +428,8 @@ input {
 
 .error-box{
   border: 5px solid $pink;
+}
+
+.input-error {
+  border: 2px solid $pink;
 }
