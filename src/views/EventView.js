@@ -145,7 +145,13 @@ export default class EventView extends Component {
               onClick= {this.changeScreen}
             />
             }
-            <Map/>
+            <Map 
+              lng={event.location.coordinates[0]} 
+              lat={event.location.coordinates[1]} 
+              zoom={13} 
+              mapType={"profileMap"}
+              containerClass="profile__pic-container__map"
+              />
           </div>
           <div >
             <div className="flex-row jc-between">
@@ -196,7 +202,13 @@ export default class EventView extends Component {
             buttonClass="z-index-1000 pa-tl"
             iconClass="fas fa-chevron-left"
             onClick= {this.changeScreen}/>
-             <img src="/images/map.jpg" className="profile__pic-container__pic" alt="location"/>
+             <Map 
+              lng={event.location.coordinates[0]} 
+              lat={event.location.coordinates[1]} 
+              zoom={13} 
+              mapType={"editMap"}
+              containerClass="profile__pic-container__map"
+              />
           </div>
           <Form 
             onSubmit={this.handleSubmit}>

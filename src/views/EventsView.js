@@ -8,6 +8,7 @@ import Field from "../components/Field"
 import apiClient from "../services/apiClient"
 import Loading from "../components/Loading"
 import Error from "../components/Error"
+import Map from "../components/Map"
 
 export default class EventsView extends Component {
 
@@ -129,8 +130,17 @@ export default class EventsView extends Component {
           <>
             <div className="profile__pic-container">
               <img src="/images/dog-office-meeting.jpg" className="profile__pic-container__pic" alt=""/>
+             
             </div>
             <h1><span className="bg-pink fs-big">Create event</span></h1>
+            <div className="flex-row jc-between pt-1 pr-1 pl-1">
+              <p className="col-4 ">Choose location</p>
+              <Map 
+                zoom={13} 
+                mapType={"newMap"}
+                containerClass="col-8 new-event-map"
+                />
+            </div>
             <Form 
               onSubmit={this.handleSubmit}>
               <Field
