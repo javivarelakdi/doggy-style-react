@@ -24,6 +24,8 @@ export default class EventView extends Component {
     initTime:"",
     endTime: "",
     errorStatus: "",
+    lng:"",
+    lat:""
   };
 
   componentDidMount() {
@@ -41,7 +43,9 @@ export default class EventView extends Component {
           description: event.data.description,
           date: event.data.date,
           initTime: event.data.initTime,
-          endTime: event.data.endTime
+          endTime: event.data.endTime,
+          lng: event.data.location.coordinates[0],
+          lat: event.data.location.coordinates[1]
         });
       })
       .catch(({...error}) => {
@@ -92,7 +96,9 @@ export default class EventView extends Component {
         description: this.state.description,
         date: this.state.date,
         initTime: this.state.initTime,
-        endTime: this.state.endTime
+        endTime: this.state.endTime,
+        lng: this.state.lng,
+        lat: this.state.lat
       })
       .then((event) => {    
         this.setState({
@@ -121,8 +127,15 @@ export default class EventView extends Component {
       });
   } 
 
+  handleLocation = (lng, lat) =>{
+    this.setState({
+      lng,
+      lat
+    });
+  }
+
   render() {
-    const { event, isLoading, editing, name, description, date, initTime, endTime, errorStatus } = this.state;
+    const { event, isLoading, editing, name, description, date, initTime, endTime, errorStatus, lng, lat } = this.state;
       
     return (
       <div className="App__container">
@@ -146,11 +159,12 @@ export default class EventView extends Component {
             />
             }
             <Map 
-              lng={event.location.coordinates[0]} 
-              lat={event.location.coordinates[1]} 
+              lng={lng} 
+              lat={lat} 
               zoom={13} 
               mapType={"profileMap"}
               containerClass="profile__pic-container__map"
+              handleLocation={this.handleLocation}
               />
           </div>
           <div >
@@ -203,11 +217,12 @@ export default class EventView extends Component {
             iconClass="fas fa-chevron-left"
             onClick= {this.changeScreen}/>
              <Map 
-              lng={event.location.coordinates[0]} 
-              lat={event.location.coordinates[1]} 
+              lng={lng} 
+              lat={lat}
               zoom={13} 
               mapType={"editMap"}
               containerClass="profile__pic-container__map"
+              handleLocation={this.handleLocation}
               />
           </div>
           <Form 
@@ -246,11 +261,6 @@ export default class EventView extends Component {
               name="endTime"
               value={endTime}
               onChange={this.handleChange}
-              />
-            <Field
-              value={event.location._id}
-              type="hidden"
-              name="locId"
               />
           </Form>
           <Form 

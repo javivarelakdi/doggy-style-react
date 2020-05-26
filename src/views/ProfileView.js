@@ -23,15 +23,17 @@ export default class ProfileView extends Component {
   componentDidMount() {
     apiClient
       .getUser(this.props.match.params.id)
-      .then((user) => {
+      .then(async (user) => {
         let userFans = [];
         userFans = user.data.fans.filter((fan) => {
           return fan._id === this.props.currentUser._id
-        }) 
+        })
+        const distance = await this.getDistance(user.data.location.coordinates[0], user.data.location.coordinates[1])
         this.setState({
           isLoading: false,
           user: user.data,
           isFav: userFans.length > 0 ? true : false,
+          distance: distance
         });
       })
       .catch(({...error}) => {
@@ -86,6 +88,30 @@ export default class ProfileView extends Component {
     });
   };
 
+  getDistance = (lng, lat) => {
+    return new Promise(resolve => {
+      const toRad = (degrees) => {
+        return degrees * (Math.PI/180);
+      }
+      
+      const distance = (lon1, lat1, lon2, lat2) => {
+          const R = 6371; // Radius of the earth in km
+          const dLat = toRad(lat2-lat1);  // Javascript functions in radians
+          const  dLon = toRad(lon2-lon1); 
+          const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                  Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * 
+                  Math.sin(dLon/2) * Math.sin(dLon/2); 
+          const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+          const d = R * c; // Distance in km
+          return d;
+        }
+        
+        window.navigator.geolocation.getCurrentPosition(function(pos) {
+          resolve(distance(pos.coords.longitude, pos.coords.latitude, lng, lat))
+        });
+    })
+  }
+
   handleToggleFav = () => {
     apiClient
       .postUserFav(this.props.match.params.id, {isFav: !this.state.isFav})
@@ -103,7 +129,7 @@ export default class ProfileView extends Component {
   }
 
   render() {
-    const { user, isLoading, editing, errorStatus } = this.state;
+    const { user, isLoading, editing, errorStatus, distance } = this.state;
     return (
       <div className="App__container">
         {isLoading && <Loading/>}
@@ -121,14 +147,12 @@ export default class ProfileView extends Component {
             <img src={user.imgUrl} className="profile__pic-container__pic" alt={user.username}/>
             </div>
 
-            <div>
+            <div className="pb-1">
               <div className="flex-row jc-between">
                 <div className="flex-row col-8 pa-1">
                   <h2 className="ellipsis col-12 pb-small">{user.username}</h2>
                   <i className="pr-small fs-small fas fa-map-marker-alt fc-pink"></i>
-                  <span className="fs-small pr-small">2km away</span>
-                  <i className="pr-small fs-small fas fa-circle fc-pink "></i>
-                  <span className="fs-small">connected</span>
+                  <span className="fs-small pr-small">{distance.toFixed(2)} km away</span>
                 </div>
                 <ul className={
                   `flex-row col-4 pa-1 ${this.props.match.params.id === this.props.currentUser._id 

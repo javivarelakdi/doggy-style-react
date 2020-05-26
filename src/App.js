@@ -42,9 +42,9 @@ class App extends Component {
       });
   }
 
-  handleLogin = ({ username, password }) => {
+  handleLogin = ({ username, password, lng, lat }) => {
     apiClient
-      .login({ username, password })
+      .login({ username, password, lng, lat })
       .then(({ data: user }) => {
         this.setState({
           isLoggedIn: true,
@@ -59,7 +59,7 @@ class App extends Component {
       });
   };
 
-  handleSignup = ({ username, password, imgUrl, breed, gender, about, birth }) => {
+  handleSignup = ({ username, password, imgUrl, breed, gender, about, birth, lng, lat }) => {
     apiClient
       .signup({ 
         username, 
@@ -68,7 +68,9 @@ class App extends Component {
         breed,
         gender,
         about,
-        birth
+        birth,
+        lng,
+        lat
       })
       .then(({ data: user }) => {
         this.setState({

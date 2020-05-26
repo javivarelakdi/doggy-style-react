@@ -5,15 +5,26 @@ export default class Login extends Component {
   state = {
     username: "",
     password: "",
+    lng:"",
+    lat:""
   };
+
+  componentDidMount(){
+    if (window.navigator.geolocation) {
+      window.navigator.geolocation.getCurrentPosition((position) => {
+        this.setState({
+          lng: position.coords.longitude,
+          lat: position.coords.latitude
+        });
+      })
+    }
+  }
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const { username, password } = this.state;
+    const { username, password, lng, lat } = this.state;
     const { onLogin } = this.props;
-    //if (username !== "" && password !== "") {
-      onLogin({ username, password });
-    //}
+    onLogin({ username, password, lng, lat });
   };
 
   handleChange = (e) => {

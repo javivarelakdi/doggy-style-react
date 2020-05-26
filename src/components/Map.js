@@ -36,7 +36,11 @@ export default class Map extends Component {
           const marker = new mapboxgl.Marker()
             .setLngLat([position.coords.longitude, position.coords.latitude])
             .addTo(map);
-          map.on('click', (evt) => { marker.setLngLat([evt.lngLat.lng, evt.lngLat.lat]) })
+          map.on('click', (evt) => { 
+            marker.setLngLat([evt.lngLat.lng, evt.lngLat.lat]) 
+            this.props.handleLocation(evt.lngLat.lng, evt.lngLat.lat);
+          })
+          this.props.handleLocation(position.coords.longitude, position.coords.latitude);
         })
       }
     }
@@ -51,7 +55,10 @@ export default class Map extends Component {
       const marker = new mapboxgl.Marker()
         .setLngLat([this.state.lng, this.state.lat])
         .addTo(map);
-      map.on('click', (evt) => { marker.setLngLat([evt.lngLat.lng, evt.lngLat.lat]) })
+      map.on('click', (evt) => { 
+        marker.setLngLat([evt.lngLat.lng, evt.lngLat.lat]) 
+        this.props.handleLocation(evt.lngLat.lng, evt.lngLat.lat);
+      })
     }
   }
 

@@ -21,7 +21,9 @@ export default class EventsView extends Component {
     endTime:"",
     events:[],
     isLoading:true,
-    errorStatus: ""
+    errorStatus: "",
+    lng:"",
+    lat:""
   }
 
   componentDidMount() {
@@ -65,7 +67,9 @@ export default class EventsView extends Component {
         description: this.state.descripton,
         date: this.state.date,
         initTime:this.state.initTime,
-        endTime: this.state.endTime
+        endTime: this.state.endTime,
+        lng: this.state.lng,
+        lat: this.state.lat
       })
       .then((event) => {    
         this.setState({
@@ -85,6 +89,13 @@ export default class EventsView extends Component {
       [e.target.name]: e.target.value,
     });
   };
+
+  handleLocation = (lng, lat) =>{
+    this.setState({
+      lng,
+      lat
+    });
+  }
 
   render() {
 
@@ -139,6 +150,7 @@ export default class EventsView extends Component {
                 zoom={13} 
                 mapType={"newMap"}
                 containerClass="col-8 new-event-map"
+                handleLocation={this.handleLocation}
                 />
             </div>
             <Form 

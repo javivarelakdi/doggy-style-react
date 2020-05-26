@@ -13,6 +13,8 @@ export default class Signup extends Component {
     gender: "",
     about: "",
     birth: "",
+    lng: "",
+    lat: "",
     breedOptions:[],
     loading:true,
     usernameValid: false,
@@ -27,6 +29,14 @@ export default class Signup extends Component {
     dogApi
       .listAll()
       .then(({data: response}) => {
+        if (window.navigator.geolocation) {
+          window.navigator.geolocation.getCurrentPosition((position) => {
+            this.setState({
+              lng: position.coords.longitude,
+              lat: position.coords.latitude
+            });
+          })
+        }
         this.setState({
           isLoading: false,
           breedOptions: this.displayDogOptions(response.message)
@@ -49,11 +59,8 @@ export default class Signup extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const { username, password, imgUrl, breed, gender, about, birth } = this.state;
-    const { onSignup } = this.props;
-    //if (username !== "" && password !== "") {
-      onSignup({ username, password, imgUrl, breed, gender, about, birth });
-    //}
+    const { username, password, imgUrl, breed, gender, about, birth, lng, lat } = this.state;
+    this.props.onSignup({ username, password, imgUrl, breed, gender, about, birth, lng, lat });
   };
 
   handleChange = (e) => {
@@ -90,7 +97,7 @@ export default class Signup extends Component {
         formErrors.password = passwordValid ? '': 'password is lower than 6 characters';
         break;
       case 'birth':
-        birthValid = value < today;
+        birthValid = true
         formErrors.birth = birthValid ? '': 'birth date must be a day in the past';
         break;
       case 'about':
@@ -115,7 +122,7 @@ export default class Signup extends Component {
   }
 
   render() {
-    const { username, password, imgUrl, breed, gender, about, birth, formErrors } = this.state;
+    const { username, password, breed, gender, about, birth, formErrors } = this.state;
 
     return (
       <>
@@ -177,12 +184,6 @@ export default class Signup extends Component {
             value={gender}
             options={[{value: "male", text:"male"},{value: "female", text:"female"},{value: "non-binary", text:"non binary"}]}
             onChange={this.handleChange}
-            />
-          <Field
-            required
-            type="hidden"
-            name="imgUrl"
-            value={imgUrl}
             />
         </Form>
         <div className="col-12 pb-1 ta-center fs-small">

@@ -10,7 +10,7 @@ export default class IconButton extends Component {
       <>
       {to ?
         <Link to={to}>
-          <button className={`icon-button ${buttonClass}`}>
+          <button className={buttonClass !== undefined ? `icon-button ${buttonClass}` : "icon-button"}>
             <i className={iconClass}></i>
           </button>
         </Link>
