@@ -72,26 +72,56 @@ export default class GridView extends Component {
     );
   };
 
-  handleFilterSubmit = () => {
-    // const { breed, gender, age, users } = this.state;
-    // let filters = [];
-    // breed !=="no-filter" && filters.push("breed");
-    // gender !=="no-filter" && filters.push("gender");
-    // age !=="no-filter" && filters.push("age");
-
-
-    // const filtered = users.filter((user) => {
-    //   filters.include("breed")
-    //   return breed === user.breed && gender === user.gender && age === user.age 
-    // })
-
-    // this.setState(
-    //   { users:filtered }
-    // );
-    return;
+  handleFilterSubmit = (e) => {
+    e.preventDefault();
+    const { breed, gender, age, users } = this.state;
+    this.togglePopup();
+    const userWithAges = users.map((user) => {
+      user.age = this.getAge(user.birth)
+      return user;
+    })
+    let filtered = []
+    if (breed !== "no-filter"){
+      filtered = userWithAges.filter((user) => {
+        return breed === user.breed 
+      })
+    }
+    
+    if (age !== "no-filter"){
+      filtered = filtered.filter((user) => {
+        return age === "0-5" 
+          ? user.age < 6
+          : age === "6-10"
+            ? user.age > 5 && user.age < 11
+            : age === "11-15"
+              ? user.age > 10 && user.age < 16
+              : user.age > 15
+      })
+    }
+    if (gender !== "no-filter"){
+      filtered = filtered.filter((user) => {
+        return gender === user.gender
+      })
+    }
+    
+    this.setState(
+      { users: filtered}
+    );
     
   }
   
+  getAge = (dateString) => {
+    var today = new Date();
+    var birthDate = new Date(dateString);
+    var age = today.getFullYear() - birthDate.getFullYear();
+    var m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) 
+    {
+        age--;
+    }
+    return age;
+  }
+
   render() {
     const {users, isLoading, errorStatus, breed, breedOptions, gender, age} = this.state;
     return (
@@ -135,7 +165,7 @@ export default class GridView extends Component {
           <>
           <Popup closePopup={this.togglePopup}>
             <Form
-              onSubmit={this.handleFilter}
+              onSubmit={this.handleFilterSubmit}
               submitButtonText="filter"
               >
               <Field 
@@ -161,7 +191,7 @@ export default class GridView extends Component {
               type="select"
               name="age"
               value={age}
-              options={[{value: "no-filter", text:"no filter"}, {value: "1-5", text:"1-5"},{value: "6-10", text:"6-10"},{value: "11-15", text:"11-15"}]}
+              options={[{value: "no-filter", text:"no filter"}, {value: "0-5", text:"1-5"},{value: "6-10", text:"6-10"},{value: "11-15", text:"11-15"},{value: "+15", text:"+15"}]}
               onChange={this.handleChange}
               />
             </Form>
