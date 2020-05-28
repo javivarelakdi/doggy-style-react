@@ -175,9 +175,10 @@ export default class ProfileView extends Component {
                   />
                 </li>
                 <li className="col-6 ta-center as-center">
-                  <Link className="link--disabled" to="">
-                    <i className="fas fa-comment-alt" ></i>
-                  </Link>
+                  <IconButton 
+                    to={`/chat/${this.props.match.params.id}`}
+                    iconClass="fas fa-comment-alt"
+                  />
                 </li>
                 </>
                 }

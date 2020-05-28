@@ -5,23 +5,23 @@ import Section from "../components/Section"
 import IconButton from "../components/IconButton"
 import { Link } from "react-router-dom"
 
-// const socket = io.connect(process.env.REACT_APP_BACKEND_URI);
-const socket = io.connect('http://localhost:5000');
-socket.on('connect', function(socket) {
-  console.log('Connected!');
-});
+
 
 export default class ChatView extends Component {
-  
+
 
   state = { msg: "", chat: [] };
 
 
   componentDidMount() {
-    socket.on("chatMessage", ({ id, msg }) => {
+    this.socket = io.connect(process.env.REACT_APP_BACKEND_URI);
+    //this.socket = io.connect('http://localhost:5000');
+    const userTo=this.props.match.params.id
+    this.socket.emit('join', {id: userTo });
+    this.socket.on("newMessage", ({ msg }) => {
       const { username, imgUrl, _id } = this.props.currentUser
       this.setState({
-        chat: [...this.state.chat, { id, msg, username, imgUrl, _id }]
+        chat: [...this.state.chat, { msg, username, imgUrl, _id }]
       });
     });
   }
@@ -34,7 +34,9 @@ export default class ChatView extends Component {
   // Function for sending message to chat server
   onMessageSubmit = (e) => {
     e.preventDefault()
-    socket.emit("chatMessage", this.state.msg);
+    const userTo = this.props.match.params.id;
+    const msg = this.state.msg;
+    this.socket.emit("newMessage", { userTo, msg });
     this.setState({ msg: "" });
   };
 
