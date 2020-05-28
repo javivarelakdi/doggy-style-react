@@ -4,9 +4,12 @@ import React, { Component } from "react";
 export default class Navbar extends Component {
 
   render() {
-    const { children, isFooter } = this.props;
+    const { children, isFooter, isChat } = this.props;
     return (
       <nav className={isFooter ? "navbar navbar--footer full-width" : "navbar full-width"}>
+          {isChat ?
+          children
+          :
           <ul className="flex-row jc-between full-height">
             {children.map((child, i) => {
               return (
@@ -16,6 +19,7 @@ export default class Navbar extends Component {
               );
             })}              
           </ul>
+          }
       </nav>
     );
   }

@@ -9,6 +9,7 @@ import apiClient from "./services/apiClient"
 import GridView from "./views/GridView"
 import ProfileView from "./views/ProfileView"
 import FavsView from "./views/FavsView"
+import ChatView from "./views/ChatView"
 import EventsView from "./views/EventsView"
 import EventView from "./views/EventView"
 
@@ -131,6 +132,9 @@ class App extends Component {
               </PrivateRoute>
               <PrivateRoute exact path={"/favs"} isLoggedIn={isLoggedIn}>
                 <FavsView currentUser={user}/>
+              </PrivateRoute>
+              <PrivateRoute exact path={"/chat"} isLoggedIn={isLoggedIn}>
+                <ChatView currentUser={user}/>
               </PrivateRoute>
               <PrivateRoute exact path={"/:id"} isLoggedIn={isLoggedIn}>
                 <ProfileWithRouter currentUser={user} logout={this.handleLogout}/>
