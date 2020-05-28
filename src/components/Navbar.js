@@ -13,7 +13,8 @@ export default class Navbar extends Component {
           <ul className="flex-row jc-between full-height">
             {children.map((child, i) => {
               return (
-                <li className="pl-1 pr-1 col-3 ta-center as-center fc-pink" key={i}>
+                <li key={i}
+                  className={` pl-1 pr-1 col-3 ta-center as-center fc-pink ${child.props.parentclass ? child.props.parentclass : ""}`}>
                   {child}
                 </li>
               );

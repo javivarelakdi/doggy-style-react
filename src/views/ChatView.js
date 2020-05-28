@@ -6,7 +6,6 @@ import IconButton from "../components/IconButton"
 import { Link } from "react-router-dom"
 
 // const socket = io.connect(process.env.REACT_APP_BACKEND_URI);
-//const socket = io.connect("http://localhost:5000");
 const socket = io.connect('http://localhost:5000');
 socket.on('connect', function(socket) {
   console.log('Connected!');
@@ -48,7 +47,7 @@ export default class ChatView extends Component {
               iconClass="fas fa-chevron-left"
               to="/"
             />
-          <div>chat room</div>
+          <h2 parentclass="col-6">chat room</h2>
           <IconButton
               iconClass="fas fa-comment-alt"
             />
@@ -60,14 +59,18 @@ export default class ChatView extends Component {
                 className={`flex-row col-9 pa-1 jc-between mr-1 ml-1 mb-1 ${this.props.currentUser.username === username 
                 ? "ba-white bg-pink row-reverse"
                 : "ba-pink bg-white fc-pink"}`}>
-                <div className="col-2">
+                <div className="col-3">
                   <div 
                     className="grid-element grid-element--small" 
                     style={{backgroundImage: `url(${imgUrl})`}}>
                     <Link className="col-12 flex-row" to={`/users/${_id}`}/>
                   </div>
                 </div>
-                <p className="col-8 pr-1 ta-right fs-small">{msg}</p>
+                <p 
+                  className={`col-7 pr-small pl-small fs-small ${this.props.currentUser.username === username && "ta-right"}`}
+                >
+                {msg}
+                </p>
                 <div className="col-2 flex-row ai-end">
                   <p className="fs-small">15:47</p>
                 </div>
@@ -83,7 +86,11 @@ export default class ChatView extends Component {
               value={this.state.msg}
               onChange={e => this.onTextChange(e)}
               />
-            <button className="col-3" type="submit"><i className="fas fa-paper-plane"></i></button>
+            <IconButton
+              iconClass="fas fa-paper-plane"
+              type="submit"
+              buttonClass="col-3"
+            />
           </form>
         </Navbar>
       </div>

@@ -15,13 +15,15 @@ export default class GridView extends Component {
   
   state = {
     users: [],
+    filteredUsers: [],
     isLoading: true,
     errorStatus: "",
     showPopup: false,
     breedOptions: [],
     breed: "no-filter",
     gender: "no-filter",
-    age:"no-filter"
+    age:"no-filter",
+    isFiltered: false
   };
 
   componentDidMount() {
@@ -76,19 +78,20 @@ export default class GridView extends Component {
     e.preventDefault();
     const { breed, gender, age, users } = this.state;
     this.togglePopup();
-    const userWithAges = users.map((user) => {
+    let usersWithAges = users.map((user) => {
       user.age = this.getAge(user.birth)
       return user;
     })
-    let filtered = []
+
+    let filtered = [...usersWithAges];
     if (breed !== "no-filter"){
-      filtered = userWithAges.filter((user) => {
+      filtered = usersWithAges.filter((user) => {
         return breed === user.breed 
       })
-    }
+    } 
     
     if (age !== "no-filter"){
-      filtered = filtered.filter((user) => {
+      filtered = usersWithAges.filter((user) => {
         return age === "0-5" 
           ? user.age < 6
           : age === "6-10"
@@ -98,15 +101,18 @@ export default class GridView extends Component {
               : user.age > 15
       })
     }
+
+
     if (gender !== "no-filter"){
-      filtered = filtered.filter((user) => {
+      filtered = usersWithAges.filter((user) => {
         return gender === user.gender
       })
     }
     
-    this.setState(
-      { users: filtered}
-    );
+    this.setState({ 
+      filteredUsers: filtered,
+      isFiltered: true
+    });
     
   }
   
@@ -123,7 +129,7 @@ export default class GridView extends Component {
   }
 
   render() {
-    const {users, isLoading, errorStatus, breed, breedOptions, gender, age} = this.state;
+    const {users, isLoading, errorStatus, breed, breedOptions, gender, age, isFiltered, filteredUsers} = this.state;
     return (
       <div className="App__container">
         {isLoading && <Loading/>}
@@ -141,7 +147,12 @@ export default class GridView extends Component {
             />
         </Navbar>
         <Section hasNav>
-          <Grid users={users} currentUserId={this.props.currentUser._id}/>
+          <Grid 
+            users={users} 
+            isFiltered={isFiltered} 
+            filteredUsers={filteredUsers} 
+            currentUserId={this.props.currentUser._id}
+          />
         </Section>
         <Navbar isFooter>
           <IconButton
@@ -169,30 +180,39 @@ export default class GridView extends Component {
               submitButtonText="filter"
               >
               <Field 
-              label="breed"
-              type="select"
-              name="breed"
-              value={breed}
-              options={[{value: "no-filter", text:"no filter"}, ...breedOptions]}
-              onChange={this.handleChange}
+                label="breed"
+                type="select"
+                name="breed"
+                value={breed}
+                options={[{value: "no-filter", text:"no filter"}, ...breedOptions]}
+                onChange={this.handleChange}
               />
               <Field
-              required
-              label="gender"
-              type="select"
-              name="gender"
-              value={gender}
-              options={[{value: "no-filter", text:"no filter"},{value: "male", text:"male"},{value: "female", text:"female"},{value: "non-binary", text:"non binary"}]}
-              onChange={this.handleChange}
+                required
+                label="gender"
+                type="select"
+                name="gender"
+                value={gender}
+                options={[
+                  {value: "no-filter", text:"no filter"},
+                  {value: "male", text:"male"},
+                  {value: "female", text:"female"},
+                  {value: "non-binary", text:"non binary"}]}
+                onChange={this.handleChange}
               />
                <Field
-              required
-              label="age"
-              type="select"
-              name="age"
-              value={age}
-              options={[{value: "no-filter", text:"no filter"}, {value: "0-5", text:"1-5"},{value: "6-10", text:"6-10"},{value: "11-15", text:"11-15"},{value: "+15", text:"+15"}]}
-              onChange={this.handleChange}
+                required
+                label="age"
+                type="select"
+                name="age"
+                value={age}
+                options={[
+                  {value: "no-filter", text:"no filter"}, 
+                  {value: "0-5", text:"1-5"},
+                  {value: "6-10", text:"6-10"},
+                  {value: "11-15", text:"11-15"},
+                  {value: "+15", text:"+15"}]}
+                onChange={this.handleChange}
               />
             </Form>
           </Popup>

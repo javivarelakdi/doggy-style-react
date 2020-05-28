@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 export default class IconButton extends Component {
 
   render() {
-    const {iconClass, to, onClick, buttonClass} = this.props;
+    const {iconClass, to, onClick, buttonClass, type } = this.props;
     return (
       <>
       {to ?
@@ -17,7 +17,8 @@ export default class IconButton extends Component {
         :
         <button 
           className={`icon-button ${buttonClass}`} 
-          onClick={onClick}>
+          onClick={onClick}
+          type={type}>
           <i className={iconClass} ></i>
         </button>
       }

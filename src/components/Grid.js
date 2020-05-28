@@ -66,8 +66,10 @@ export default class Grid extends Component {
   }
   
   render() {
-    const { columns, currentUserId } = this.props;
-    const { users } = this.state;
+    const { columns, currentUserId, isFiltered, filteredUsers } = this.props;
+    const users = isFiltered 
+      ? filteredUsers
+      : this.state.users ;
     let colIndex; 
     switch (true) {
       case (columns === 2):
@@ -82,19 +84,23 @@ export default class Grid extends Component {
     }
     return (
       <ul className="flex-row">
-        {users.map((user, i) => {
-          return (
-            <li className={`col-${colIndex} grid-element flex-row`} key={i} style={{backgroundImage: `url(${user.imgUrl})`}}>
-                <Link className="col-12 flex-row ai-end jc-end" to={user._id}>
-                  <span className="bg-pink fs-small fc-white pl-small pr-small">
-                  { (currentUserId && currentUserId === user._id) || !user.distance
-                    ? user.username
-                    : `${user.username}: ${user.distance.toFixed(2)} km away`}
-                </span>
-                </Link>
-            </li>
-          );
-        })}     
+        { users.length ?
+          users.map((user, i) => {
+            return (
+              <li className={`col-${colIndex} grid-element flex-row`} key={i} style={{backgroundImage: `url(${user.imgUrl})`}}>
+                  <Link className="col-12 flex-row ai-end jc-end" to={user._id}>
+                    <span className="bg-pink fs-small fc-white pl-small pr-small">
+                    { (currentUserId && currentUserId === user._id) || !user.distance
+                      ? user.username
+                      : `${user.username}: ${user.distance.toFixed(2)} km away`}
+                  </span>
+                  </Link>
+              </li>
+            );
+          })
+          :
+          <p class="pa-1">ouch! There are no dogs with your current filter, try again please</p>
+        }     
       </ul>
     );
   }
