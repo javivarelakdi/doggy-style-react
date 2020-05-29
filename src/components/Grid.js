@@ -1,16 +1,19 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import Loading from "../components/Loading"
 
 export default class Grid extends Component {
   
   state={
-    users:[]
+    users:[],
+    isLoading: true
   }
   
   componentDidMount(){
     if (this.props.isFavView) {
       this.setState({
-        users: this.props.users
+        users: this.props.users,
+        isLoading: false
       });
     } else {
       const includeDistance = async user => {
@@ -21,7 +24,8 @@ export default class Grid extends Component {
       usersWithDistance().then(result => {
         result.sort(this.compare);
         this.setState({
-          users: result
+          users: result,
+          isLoading: false
         });
       })
     }
@@ -83,6 +87,9 @@ export default class Grid extends Component {
         break;
     }
     return (
+      <>
+      {this.state.isLoading && <Loading/>}
+      {!this.state.isLoading &&
       <ul className="flex-row">
         { users.length ?
           users.map((user, i) => {
@@ -99,9 +106,11 @@ export default class Grid extends Component {
             );
           })
           :
-          <p class="pa-1">ouch! There are no dogs with your current filter, try again please</p>
+          <p className="pa-1">ouch! There are no dogs with your current filter, try again please</p>
         }     
       </ul>
+      }
+      </>
     );
   }
 }

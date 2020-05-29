@@ -9,7 +9,7 @@ import Popup from "../components/Popup"
 import apiClient from "../services/apiClient"
 import Loading from "../components/Loading"
 import Error from "../components/Error"
-import dogApi from "../services/dogApi"
+//import dogApi from "../services/dogApi"
 
 export default class GridView extends Component {
   
@@ -19,7 +19,7 @@ export default class GridView extends Component {
     isLoading: true,
     errorStatus: "",
     showPopup: false,
-    breedOptions: [],
+    //breedOptions: [],
     breed: "no-filter",
     gender: "no-filter",
     age:"no-filter",
@@ -30,21 +30,21 @@ export default class GridView extends Component {
     apiClient
       .getUsers()
       .then((users) => {
-        dogApi
-        .listAll()
-        .then(({data: response}) => {
+        // dogApi
+        // .listAll()
+        // .then(({data: response}) => {
           this.setState({
             isLoading: false,
-            breedOptions: this.displayDogOptions(response.message),
+            //breedOptions: this.displayDogOptions(response.message),
             users: users.data
           });
-        })
-        .catch((error) => {
-          this.setState({
-            isLoading: false,
-            //errorStatus: error.response.status,
-          });
-        });
+        // })
+        // .catch((error) => {
+        //   this.setState({
+        //     isLoading: false,
+        //     //errorStatus: error.response.status,
+        //   });
+        // });
       })
       .catch(({...error}) => {
         this.setState({
@@ -111,7 +111,7 @@ export default class GridView extends Component {
     
     this.setState({ 
       filteredUsers: filtered,
-      isFiltered: true
+      isFiltered: (gender === "no-filter" && breed === "no-filter" && age === "no-filter") ? false : true
     });
     
   }
@@ -129,7 +129,8 @@ export default class GridView extends Component {
   }
 
   render() {
-    const {users, isLoading, errorStatus, breed, breedOptions, gender, age, isFiltered, filteredUsers} = this.state;
+    //const {users, isLoading, errorStatus, breed, breedOptions, gender, age, isFiltered, filteredUsers} = this.state;
+    const {users, isLoading, errorStatus, breed,  gender, age, isFiltered, filteredUsers} = this.state;
     return (
       <div className="App__container">
         {isLoading && <Loading/>}
@@ -184,7 +185,8 @@ export default class GridView extends Component {
                 type="select"
                 name="breed"
                 value={breed}
-                options={[{value: "no-filter", text:"no filter"}, ...breedOptions]}
+                // options={[{value: "no-filter", text:"no filter"}, ...breedOptions]}
+                options={[{value: "no-filter", text:"no filter"}]}
                 onChange={this.handleChange}
               />
               <Field

@@ -14,8 +14,8 @@ export default class ChatView extends Component {
 
 
   componentDidMount() {
-    this.socket = io.connect(process.env.REACT_APP_BACKEND_URI);
-    //this.socket = io.connect('http://localhost:5000');
+    //this.socket = io.connect(process.env.REACT_APP_BACKEND_URI);
+    this.socket = io.connect('http://localhost:5000');
     const userTo=this.props.match.params.id
     this.socket.emit('join', {id: userTo });
     this.socket.on("newMessage", ({ msg }) => {

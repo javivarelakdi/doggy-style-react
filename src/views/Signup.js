@@ -85,7 +85,7 @@ export default class Signup extends Component {
   validateField = (fieldName, value) => {
     let {formErrors, usernameValid, passwordValid, birthValid, aboutValid } = this.state
     
-    const today = new Date();
+    //const today = new Date();
   
     switch(fieldName) {
       case 'username':
