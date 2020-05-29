@@ -127,6 +127,34 @@ export default class ProfileView extends Component {
       .catch(); 
   }
 
+  handleJoinRoom = () => {
+    apiClient
+      .getChats()
+      .then((chats) => {
+        const targetUserId = this.props.match.params.id;
+        const currentUserId = this.props.currentUser._id
+        //checks if chat exists
+        const targetChat = chats.data.filter((chat)=>{
+          const hasTargetUser = chat.users.some((user) => {
+            return user._id === targetUserId
+          })
+          const hasCurrentUser = chat.users.some((user) => {
+            return user._id === currentUserId
+          })
+          return (hasTargetUser && hasCurrentUser)
+        })
+        //if chat exists redirects to chat
+        //if it doesnt creates chat and redirects to it
+        targetChat.length
+          ? this.props.history.push(`/chat/${targetChat[0]._id}`, { from: this.props.location })
+          : apiClient
+            .createChat({targetUserId:targetUserId})
+            .then((chat) => {
+              this.props.history.push(`/chat/${chat.data._id}`, { from: this.props.location })
+            })
+      })
+  }
+
   render() {
     const { user, isLoading, editing, errorStatus, distance } = this.state;
     return (
@@ -175,7 +203,7 @@ export default class ProfileView extends Component {
                 </li>
                 <li className="col-6 ta-center as-center">
                   <IconButton 
-                    to={`/chat/${this.props.match.params.id}`}
+                    onClick= {this.handleJoinRoom}
                     iconClass="fas fa-comment-alt"
                   />
                 </li>

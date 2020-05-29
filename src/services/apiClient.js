@@ -64,6 +64,14 @@ class ApiClient {
     return this.apiClient.post("/events/new", body);
   }
 
+  getChats() {
+    return this.apiClient.get("/chats");
+  }
+
+  createChat(body) {
+    return this.apiClient.post("/chats/new", body)
+  }
+
   
 }
 
