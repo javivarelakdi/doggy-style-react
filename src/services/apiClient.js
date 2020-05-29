@@ -72,6 +72,10 @@ class ApiClient {
     return this.apiClient.post("/chats/new", body)
   }
 
+  updateChat(chatId, body) {
+    return this.apiClient.post(`/chats/${chatId}`, body)
+  }
+
   
 }
 
