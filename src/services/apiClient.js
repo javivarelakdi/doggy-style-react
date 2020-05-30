@@ -3,7 +3,8 @@ import axios from "axios";
 class ApiClient {
   constructor() {
     this.apiClient = axios.create({
-      baseURL: process.env.REACT_APP_BACKEND_URI,
+      //baseURL: process.env.REACT_APP_BACKEND_URI,
+      baseURL: "http://localhost:5000",
       withCredentials: true,
     });
   }
@@ -68,13 +69,15 @@ class ApiClient {
     return this.apiClient.get("/chats");
   }
 
+  getChat(chatId) {
+    return this.apiClient.get(`/chats/${chatId}`);
+  }
+
   createChat(body) {
     return this.apiClient.post("/chats/new", body)
   }
 
-  updateChat(chatId, body) {
-    return this.apiClient.post(`/chats/${chatId}`, body)
-  }
+
 
   
 }

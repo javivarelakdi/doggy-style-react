@@ -4,6 +4,7 @@ import Navbar from "../components/Navbar"
 import Section from "../components/Section"
 import IconButton from "../components/IconButton"
 import { Link } from "react-router-dom"
+import apiClient from "../services/apiClient";
 
 
 
@@ -14,17 +15,26 @@ export default class ChatView extends Component {
   state = { msg: "", chat: [] };
 
 
-  componentDidMount() {
-    this.socket = io.connect(process.env.REACT_APP_BACKEND_URI);
-    //this.socket = io.connect('http://localhost:5000');
+  async componentDidMount() {
     const roomId=this.props.match.params.id
-    this.socket.emit('join', {id: roomId });
-    this.socket.on("newMessage", ({ sender, msg }) => {
+    apiClient
+      .getChat(roomId)
+      .then((chat) => {
+        console.log(chat.data.messages)
+        this.setState({
+          chat: chat.data.messages
+        })
+      })
+    //this.socket = io.connect(process.env.REACT_APP_BACKEND_URI);
+    this.socket = io.connect('http://localhost:5000');
+    this.socket.emit("join", {id: roomId });
+    this.socket.on("newMessage", ({ sender, content }) => {
       this.setState({
-        chat: [...this.state.chat, { sender, msg }]
+        chat: [...this.state.chat, { sender, content }]
       });
     });
   }
+  
 
   // Function for getting text input
   onTextChange = e => {
@@ -35,9 +45,9 @@ export default class ChatView extends Component {
   onMessageSubmit = (e) => {
     e.preventDefault()
     const roomId = this.props.match.params.id;
-    const msg = this.state.msg;
+    const content = this.state.msg;
     const sender = this.props.currentUser
-    this.socket.emit("newMessage", { roomId, sender, msg });
+    this.socket.emit("newMessage", { roomId, sender, content });
     this.setState({ msg: "" });
   };
 
@@ -56,7 +66,7 @@ export default class ChatView extends Component {
             />
         </Navbar>
         <Section hasNav>
-          {chat.map(({ roomId, sender, msg }, i) => (
+          {chat.map(({ roomId, sender, content }, i) => (
             <div key={i} className={`flex-row ${this.props.currentUser.username === sender.username && "jc-end"}`}>
               <div 
                 className={`flex-row col-9 pa-1 jc-between mr-1 ml-1 mb-1 ${this.props.currentUser.username === sender.username 
@@ -72,7 +82,7 @@ export default class ChatView extends Component {
                 <p 
                   className={`col-7 pr-small pl-small fs-small ${this.props.currentUser.username === sender.username && "ta-right"}`}
                 >
-                {msg}
+                {content}
                 </p>
                 <div className="col-2 flex-row ai-end">
                   <p className="fs-small">15:47</p>

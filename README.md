@@ -165,11 +165,11 @@ The url to your repository and to your deployed project
 
 [Repository Link](https://github.com/javivarelakdi/doggy-style-react)
 
-[Deploy Link](http://netlify.com/)
+[Deploy Link](https://doggy-style.netlify.app/)
 
 ### Slides
 
-[Slides Link](http://slides.com/)
+[Slides Link](https://docs.google.com/presentation/d/1AW-UOcVg-8gADT0Gihq1Q9JnJjMtGPZ6BZayNAXQKQA/edit?usp=sharing)
 
 ## Create React App
 
