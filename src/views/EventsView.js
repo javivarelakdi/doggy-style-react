@@ -64,7 +64,7 @@ export default class EventsView extends Component {
       .createEvent({
         owner: this.props.currentUser,
         name: this.state.name,
-        description: this.state.descripton,
+        description: this.state.description,
         date: this.state.date,
         initTime:this.state.initTime,
         endTime: this.state.endTime,

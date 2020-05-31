@@ -8,6 +8,7 @@ import apiClient from "../services/apiClient"
 import Loading from "../components/Loading"
 import Error from "../components/Error"
 import Map from "../components/Map"
+import Popup from "../components/Popup"
 
 
 export default class EventView extends Component {
@@ -25,7 +26,8 @@ export default class EventView extends Component {
     endTime: "",
     errorStatus: "",
     lng:"",
-    lat:""
+    lat:"",
+    showPopup: false
   };
 
   componentDidMount() {
@@ -113,7 +115,7 @@ export default class EventView extends Component {
       });
   };
 
-  handleDeleteSubmit = (e) => {
+  handleDelete= (e) => {
     e.preventDefault();
     apiClient
       .deleteEvent(this.props.match.params.id)
@@ -134,6 +136,12 @@ export default class EventView extends Component {
     });
   }
 
+  togglePopup = () => {
+    this.setState({
+      showPopup: !this.state.showPopup
+    });
+  }
+
   render() {
     const { event, isLoading, editing, name, description, date, initTime, endTime, errorStatus, lng, lat } = this.state;
       
@@ -151,13 +159,6 @@ export default class EventView extends Component {
               iconClass="fas fa-chevron-left"
               to="/events"
             />
-            {event.owner._id === this.props.currentUser._id &&
-              <IconButton
-              buttonClass="z-index-1000 pa-tr"
-              iconClass="fas fa-edit"
-              onClick= {this.changeScreen}
-            />
-            }
             <Map 
               lng={lng} 
               lat={lat} 
@@ -180,7 +181,7 @@ export default class EventView extends Component {
                   <span className="fs-small pr-small">2km away</span>
                 </div>
               </div>
-              { event.owner._id !== this.props.currentUser._id &&
+              { event.owner._id !== this.props.currentUser._id ?
                 <div className="col-4 pa-1">
                   <select 
                     className="col-12 select select--button" 
@@ -191,6 +192,20 @@ export default class EventView extends Component {
                     <option value="false">Not coming</option>
                   </select>
                 </div>
+                :
+                <ul className="col-4 pa-1 flex-row">
+                    <li className="col-6 ta-center as-center">
+                    <IconButton
+                      iconClass="fas fa-edit"
+                      onClick= {this.changeScreen}/>
+                    </li>
+                    <li className="col-6 ta-center as-center">
+                      <IconButton
+                        iconClass="far fa-trash-alt"
+                        onClick= {this.togglePopup}
+                      />
+                    </li>
+                </ul>
               }
             </div>
             <p className="pr-1 pl-1">{description}</p>
@@ -208,6 +223,18 @@ export default class EventView extends Component {
               })}
             </ul>
           </div>
+          {this.state.showPopup &&
+            <Popup closePopup={this.togglePopup} small>
+              <div className="pa-1 flex-row">
+                <h2 className="ta-center">Are you sure you want to cancel this event?</h2>
+                <button 
+                  className="button col-12 mt-1"
+                  onClick= {this.handleDelete}>
+                  Delete
+                </button>
+              </div>
+            </Popup>
+          }
           </>
           :
           <>
@@ -262,10 +289,6 @@ export default class EventView extends Component {
               value={endTime}
               onChange={this.handleChange}
               />
-          </Form>
-          <Form 
-            onSubmit={this.handleDeleteSubmit} 
-            submitButtonText="cancel event">
           </Form>
           </>
           }

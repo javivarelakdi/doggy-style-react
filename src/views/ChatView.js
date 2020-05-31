@@ -5,7 +5,7 @@ import Section from "../components/Section"
 import IconButton from "../components/IconButton"
 import { Link } from "react-router-dom"
 import apiClient from "../services/apiClient";
-
+import dateFormatter from "../utils/dateFormatter"
 
 
 
@@ -27,9 +27,9 @@ export default class ChatView extends Component {
     //this.socket = io.connect(process.env.REACT_APP_BACKEND_URI);
     this.socket = io.connect('http://localhost:5000');
     this.socket.emit("join", {id: roomId });
-    this.socket.on("newMessage", ({ sender, content }) => {
+    this.socket.on("newMessage", ({ sender, content, createdAt }) => {
       this.setState({
-        chat: [...this.state.chat, { sender, content }]
+        chat: [...this.state.chat, { sender, content, createdAt }]
       });
     });
   }
@@ -46,7 +46,8 @@ export default class ChatView extends Component {
     const roomId = this.props.match.params.id;
     const content = this.state.msg;
     const sender = this.props.currentUser
-    this.socket.emit("newMessage", { roomId, sender, content });
+    const createdAt = new Date();
+    this.socket.emit("newMessage", { roomId, sender, content, createdAt });
     this.setState({ msg: "" });
   };
 
@@ -57,7 +58,7 @@ export default class ChatView extends Component {
         <Navbar>
           <IconButton
               iconClass="fas fa-chevron-left"
-              to="/"
+              onClick={this.props.history.goBack}
             />
           <h2 parentclass="col-6">chat room</h2>
           <IconButton
@@ -65,7 +66,7 @@ export default class ChatView extends Component {
             />
         </Navbar>
         <Section hasNav>
-          {chat.map(({ roomId, sender, content }, i) => (
+          {chat.map(({ roomId, sender, content, createdAt }, i) => (
             <div key={i} className={`flex-row ${this.props.currentUser.username === sender.username && "jc-end"}`}>
               <div 
                 className={`flex-row col-9 pa-1 jc-between mr-1 ml-1 mb-1 ${this.props.currentUser.username === sender.username 
@@ -84,7 +85,7 @@ export default class ChatView extends Component {
                 {content}
                 </p>
                 <div className="col-2 flex-row ai-end">
-                  <p className="fs-small">15:47</p>
+                  <p className="fs-small">{dateFormatter.timeFormat(createdAt)}</p>
                 </div>
               </div>
             </div>

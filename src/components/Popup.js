@@ -5,7 +5,7 @@ export default class Popup extends Component {
   render() {
     return (
       <div className='popup'>
-        <div className='popup_inner'>
+        <div className={`popup_inner popup_inner--pink ${this.props.small && "popup_inner--small ba-white"}`}>
         <div className='flex-row jc-end'>
           <IconButton
             buttonClass="ma-small"

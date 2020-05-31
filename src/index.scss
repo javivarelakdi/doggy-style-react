@@ -460,8 +460,15 @@ input, select {
   right: 0;
   top: 0;
   bottom: 0;
-  background: $pink;
+  background: $blue;
   margin: auto;
+}
+.popup_inner--small {
+  width:80%;
+  height: calc(100vh - 70%)
+}
+.popup_inner--pink {
+  background: $pink;
 }
 
 .popup_inner__confirm{
@@ -469,4 +476,8 @@ input, select {
   right: 25%;
   top: 40%;
   bottom: 40%;
+}
+
+mapboxgl-ctrl-bottom-left{
+  display: none;
 }

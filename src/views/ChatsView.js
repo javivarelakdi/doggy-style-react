@@ -6,7 +6,7 @@ import apiClient from "../services/apiClient"
 import Loading from "../components/Loading"
 import Error from "../components/Error"
 import ChatCard from "../components/ChatCard"
-import timeFormat from "../utils/date-formatter"
+import dateFormatter from "../utils/dateFormatter"
 
 export default class ChatsView extends Component {
 
@@ -64,7 +64,7 @@ export default class ChatsView extends Component {
                 <ChatCard
                   key={i}
                   title={chat.messages[0].sender.username}
-                  time={timeFormat(chat.messages[0].createdAt)}
+                  time={dateFormatter.timeFormat(chat.messages[0].createdAt)}
                   imgUrl={chat.messages[0].sender.imgUrl}
                   content={chat.messages[0].content}
                   onClick={() => this.handleRedirect(chat._id)}

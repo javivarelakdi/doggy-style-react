@@ -10,6 +10,7 @@ import apiClient from "../services/apiClient"
 import Loading from "../components/Loading"
 import Error from "../components/Error"
 import dogApi from "../services/dogApi"
+import dateFormatter from "../utils/dateFormatter"
 
 export default class GridView extends Component {
   
@@ -79,7 +80,7 @@ export default class GridView extends Component {
     const { breed, gender, age, users } = this.state;
     this.togglePopup();
     let usersWithAges = users.map((user) => {
-      user.age = this.getAge(user.birth)
+      user.age = dateFormatter.getAge(user.birth)
       return user;
     })
 
@@ -114,18 +115,6 @@ export default class GridView extends Component {
       isFiltered: (gender === "no-filter" && breed === "no-filter" && age === "no-filter") ? false : true
     });
     
-  }
-  
-  getAge = (dateString) => {
-    var today = new Date();
-    var birthDate = new Date(dateString);
-    var age = today.getFullYear() - birthDate.getFullYear();
-    var m = today.getMonth() - birthDate.getMonth();
-    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) 
-    {
-        age--;
-    }
-    return age;
   }
 
   render() {

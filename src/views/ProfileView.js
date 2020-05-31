@@ -6,6 +6,8 @@ import IconButton from "../components/IconButton"
 import Field from "../components/Field"
 import Loading from "../components/Loading"
 import Error from "../components/Error"
+import dateFormatter from "../utils/dateFormatter"
+import Popup from "../components/Popup"
 
 
 export default class ProfileView extends Component {
@@ -16,7 +18,8 @@ export default class ProfileView extends Component {
     isLoading: true,
     editing: false,
     isFav: false,
-    errorStatus: ""
+    errorStatus: "",
+    showPopup: false
   };
 
   componentDidMount() {
@@ -73,7 +76,7 @@ export default class ProfileView extends Component {
       }); 
   };
 
-  handleLogoutSubmit = (e) => {
+  handleLogout = (e) => {
     e.preventDefault();
     this.props.logout();
   };
@@ -155,6 +158,12 @@ export default class ProfileView extends Component {
       })
   }
 
+  togglePopup = () => {
+    this.setState({
+      showPopup: !this.state.showPopup
+    });
+  }
+
   render() {
     const { user, isLoading, editing, errorStatus, distance } = this.state;
     return (
@@ -187,12 +196,20 @@ export default class ProfileView extends Component {
                     : "jc-between"}`
                 }>
                 {this.props.match.params.id === this.props.currentUser._id ?
+                <>
                 <li className="col-6 ta-center as-center">
                 <IconButton
                   iconClass="fas fa-edit"
                   onClick= {this.changeScreen}
                 />
                 </li>
+                <li className="col-6 ta-center as-center">
+                <IconButton
+                  iconClass="fas fa-sign-out-alt"
+                  onClick= {this.togglePopup}
+                />
+                </li>
+                </>
                 :
                 <>
                 <li className="col-6 ta-center as-center">
@@ -218,8 +235,8 @@ export default class ProfileView extends Component {
                     <span className="flex-row col-8">{user.breed}</span>
                 </li>
                 <li className="flex-row col-12 bb-white pb-1 pt-1">
-                    <span className="flex-row col-4">Birth:</span>
-                    <span className="flex-row col-8">{user.birth}</span>
+                    <span className="flex-row col-4">Age:</span>
+                    <span className="flex-row col-8">{dateFormatter.getAge(user.birth)}</span>
                 </li>
                 <li className="flex-row col-12 pt-1">
                     <span className="flex-row col-4">Gender:</span>
@@ -227,6 +244,18 @@ export default class ProfileView extends Component {
                 </li>
               </ul>
             </div>
+            {this.state.showPopup &&
+              <Popup closePopup={this.togglePopup} small>
+                <div className="pa-1 flex-row">
+                  <h2 className="ta-center">Are you sure you want to logout?</h2>
+                  <button 
+                    className="button col-12 mt-1"
+                    onClick= {this.handleLogout}>
+                    Confirm
+                  </button>
+                </div>
+              </Popup>
+            }
           </>
           :
           <>
@@ -268,10 +297,6 @@ export default class ProfileView extends Component {
                 options={[{value: "male", text:"male"},{value: "female", text:"female"},{value: "non-binary", text:"non binary"}]}
                 onChange={this.handleChange}
                 />
-            </Form>
-            <Form 
-              onSubmit={this.handleLogoutSubmit} 
-              submitButtonText="logout">
             </Form>
           </>
           }
