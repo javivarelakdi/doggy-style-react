@@ -471,13 +471,6 @@ input, select {
   background: $pink;
 }
 
-.popup_inner__confirm{
-  left: 25%;
-  right: 25%;
-  top: 40%;
-  bottom: 40%;
-}
-
-mapboxgl-ctrl-bottom-left{
+.mapboxgl-control-container{
   display: none;
 }

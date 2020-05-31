@@ -97,6 +97,10 @@ export default class EventsView extends Component {
     });
   }
 
+  handleRedirect = (eventId) => {
+    this.props.history.push(`/events/${eventId}`, { from: this.props.location })
+  }
+
   render() {
 
     const { screen, events, isLoading, errorStatus} = this.state;
@@ -121,10 +125,13 @@ export default class EventsView extends Component {
           { screen === "list" ?
           <ul className="flex-row pt-1 pr-1 pl-1">
             { events.map((event, i) => {
+              const eventDate = new Date(event.date);
+              const formattedEventDate = new Intl.DateTimeFormat('en-GB').format(eventDate)
               return (
                 <EventCard
                   key={i}
                   title={event.name}
+                  date={formattedEventDate}
                   description={event.description}
                   timeSlot={`${event.initTime} - ${event.endTime}`}
                   location="2km away"
@@ -133,6 +140,7 @@ export default class EventsView extends Component {
                   ownerName={event.owner.username}
                   ownerImgUrl={event.owner.imgUrl}
                   id={event._id}
+                  onClick={() => this.handleRedirect(event._id)}
                 />
               );
             })}     

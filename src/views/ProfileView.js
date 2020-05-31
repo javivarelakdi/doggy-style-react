@@ -8,6 +8,7 @@ import Loading from "../components/Loading"
 import Error from "../components/Error"
 import dateFormatter from "../utils/dateFormatter"
 import Popup from "../components/Popup"
+import { Link } from "react-router-dom";
 
 
 export default class ProfileView extends Component {
@@ -238,9 +239,31 @@ export default class ProfileView extends Component {
                     <span className="flex-row col-4">Age:</span>
                     <span className="flex-row col-8">{dateFormatter.getAge(user.birth)}</span>
                 </li>
-                <li className="flex-row col-12 pt-1">
+                <li className="flex-row col-12 pt-1 pb-1 bb-white">
                     <span className="flex-row col-4">Gender:</span>
                     <span className="flex-row col-8">{user.gender}</span>
+                </li>
+                <li className="flex-row col-12 pt-1">
+                    <span className="flex-row col-4">Events:</span>
+                    <ul className="flex-row col-8">
+                      { user.events.length  > 0 ?
+                        user.events.map((event, i) => {
+                          const eventDate = new Date(event.date);
+                          return <li key={i} className="pb-small">
+                            <i className="fc-pink fs-small pr-1 far fa-calendar"></i>
+                            <Link to={`/events/${event._id}`}>
+                              {event.name}: {Intl.DateTimeFormat('en-GB').format(eventDate)}</Link>
+                          </li>  
+                        })
+                      : this.props.match.params.id === this.props.currentUser._id ? 
+                        <>
+                        <li className="pb-small">Not hosting events yet</li>
+                        <li><Link to="/events"><button className="button">go create one</button></Link></li>
+                        </>
+                        :
+                        <li className="pb-small">Not hosting events yet</li>
+                      }
+                    </ul>
                 </li>
               </ul>
             </div>

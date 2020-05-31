@@ -16,6 +16,7 @@ import EventView from "./views/EventView"
 
 const ProfileWithRouter  = withRouter(ProfileView);
 const EventWithRouter  = withRouter(EventView);
+const EventsWithRouter  = withRouter(EventsView);
 const ChatWithRouter  = withRouter(ChatView);
 const ChatsWithRouter  = withRouter(ChatsView);
 
@@ -131,7 +132,7 @@ class App extends Component {
                 <EventWithRouter currentUser={user}/>
               </PrivateRoute>
               <PrivateRoute exact path={"/events"} isLoggedIn={isLoggedIn}>
-                <EventsView currentUser={user}/>
+                <EventsWithRouter currentUser={user}/>
               </PrivateRoute>
               <PrivateRoute exact path={"/favs"} isLoggedIn={isLoggedIn}>
                 <FavsView currentUser={user}/>

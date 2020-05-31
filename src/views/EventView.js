@@ -37,13 +37,15 @@ export default class EventView extends Component {
         const attending = event.data.attendees.filter((att) => {
           return att._id === this.props.currentUser._id
         })
+        const eventDate = new Date(event.data.date);
+        //const formattedEventDate = eventDate.toISOString().substring(0,10);
         this.setState({
           isLoading: false,
           event: event.data,
           isAttending: attending.length > 0 ? true : false,
           name: event.data.name,
           description: event.data.description,
-          date: event.data.date,
+          date: eventDate,
           initTime: event.data.initTime,
           endTime: event.data.endTime,
           lng: event.data.location.coordinates[0],
@@ -157,7 +159,7 @@ export default class EventView extends Component {
             <IconButton
               buttonClass="z-index-1000 pa-tl"
               iconClass="fas fa-chevron-left"
-              to="/events"
+              onClick={this.props.history.goBack}
             />
             <Map 
               lng={lng} 
@@ -172,6 +174,11 @@ export default class EventView extends Component {
             <div className="flex-row jc-between">
               <div className="flex-row col-8 pa-1">
                 <h2 className="ellipsis col-12 pb-small">{name}</h2>
+                
+                <div className="pr-1">
+                  <i className="pr-small fs-small fas far fa-calendar fc-pink"></i> 
+                  <span className="fs-small">{Intl.DateTimeFormat('en-GB').format(date)}</span>
+                </div>
                 <div className="pr-1">
                   <i className="pr-small fs-small fas fa-clock fc-pink"></i> 
                   <span className="fs-small">{`${initTime} - ${endTime}`}</span>
@@ -272,7 +279,7 @@ export default class EventView extends Component {
               label="date"
               type="date"
               name="date"
-              value={date}
+              value={date.toISOString().substring(0,10)}
               onChange={this.handleChange}
               />
             <Field 
