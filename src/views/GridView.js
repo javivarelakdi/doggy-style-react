@@ -161,7 +161,7 @@ export default class GridView extends Component {
             iconClass="fas fa-border-all"
           />
           <IconButton
-            to="/"
+            to="/chat"
             iconClass="fas fa-comment-alt"
           />
           <IconButton

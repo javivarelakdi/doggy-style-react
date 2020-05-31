@@ -10,12 +10,14 @@ import GridView from "./views/GridView"
 import ProfileView from "./views/ProfileView"
 import FavsView from "./views/FavsView"
 import ChatView from "./views/ChatView"
+import ChatsView from "./views/ChatsView"
 import EventsView from "./views/EventsView"
 import EventView from "./views/EventView"
 
 const ProfileWithRouter  = withRouter(ProfileView);
 const EventWithRouter  = withRouter(EventView);
 const ChatWithRouter  = withRouter(ChatView);
+const ChatsWithRouter  = withRouter(ChatsView);
 
 class App extends Component {
   state = {
@@ -136,6 +138,9 @@ class App extends Component {
               </PrivateRoute>
               <PrivateRoute exact path={"/chat/:id"} isLoggedIn={isLoggedIn}>
                 <ChatWithRouter currentUser={user}/>
+              </PrivateRoute>
+              <PrivateRoute exact path={"/chat"} isLoggedIn={isLoggedIn}>
+                <ChatsWithRouter currentUser={user}/>
               </PrivateRoute>
               <PrivateRoute exact path={"/:id"} isLoggedIn={isLoggedIn}>
                 <ProfileWithRouter currentUser={user} logout={this.handleLogout}/>

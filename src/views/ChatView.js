@@ -20,7 +20,6 @@ export default class ChatView extends Component {
     apiClient
       .getChat(roomId)
       .then((chat) => {
-        console.log(chat.data.messages)
         this.setState({
           chat: chat.data.messages
         })
