@@ -86,13 +86,13 @@ export default class GridView extends Component {
     let filtered = [...usersWithAges];
 
     if (breed !== "no-filter"){
-      filtered = usersWithAges.filter((user) => {
+      filtered = filtered.filter((user) => {
         return breed === user.breed 
       })
     } 
     
     if (age !== "no-filter"){
-      filtered = usersWithAges.filter((user) => {
+      filtered = filtered.filter((user) => {
         return age === "0-5" 
           ? user.age < 6
           : age === "6-10"
@@ -105,7 +105,7 @@ export default class GridView extends Component {
 
 
     if (gender !== "no-filter"){
-      filtered = usersWithAges.filter((user) => {
+      filtered = filtered.filter((user) => {
         return gender === user.gender
       })
     }
