@@ -177,13 +177,11 @@ export default class EventsView extends Component {
           { screen === "list" ?
           <ul className="flex-row pt-1 pr-1 pl-1">
             { events.map((event, i) => {
-              const eventDate = new Date(event.date);
-              const formattedEventDate = new Intl.DateTimeFormat('en-GB').format(eventDate)
               return (
                 <EventCard
                   key={i}
                   title={event.name}
-                  date={formattedEventDate}
+                  date={event.date.substring(0,10)}
                   description={event.description}
                   timeSlot={`${event.initTime} - ${event.endTime}`}
                   location="2km away"

@@ -249,11 +249,10 @@ export default class ProfileView extends Component {
                     <ul className="flex-row col-8">
                       { user.events.length  > 0 ?
                         user.events.map((event, i) => {
-                          const eventDate = new Date(event.date);
                           return <li key={i} className="pb-small">
                             <i className="fc-pink fs-small pr-1 far fa-calendar"></i>
                             <Link to={`/events/${event._id}`}>
-                              {event.name}: {Intl.DateTimeFormat('en-GB').format(eventDate)}</Link>
+                              {event.name}: {event.date.substring(0,10)}</Link>
                           </li>  
                         })
                       : this.props.match.params.id === this.props.currentUser._id ? 

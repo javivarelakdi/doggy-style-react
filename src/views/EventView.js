@@ -3,7 +3,7 @@ import Section from "../components/Section"
 import Form from "../components/Form"
 import IconButton from "../components/IconButton"
 import Field from "../components/Field"
-import { Link } from "react-router-dom"
+// import { Link } from "react-router-dom"
 import apiClient from "../services/apiClient"
 import Loading from "../components/Loading"
 import Error from "../components/Error"
@@ -37,15 +37,13 @@ export default class EventView extends Component {
         const attending = event.data.attendees.filter((att) => {
           return att._id === this.props.currentUser._id
         })
-        const eventDate = new Date(event.data.date);
-        //const formattedEventDate = eventDate.toISOString().substring(0,10);
         this.setState({
           isLoading: false,
           event: event.data,
           isAttending: attending.length > 0 ? true : false,
           name: event.data.name,
           description: event.data.description,
-          date: eventDate,
+          date: event.data.date,
           initTime: event.data.initTime,
           endTime: event.data.endTime,
           lng: event.data.location.coordinates[0],
@@ -178,7 +176,7 @@ export default class EventView extends Component {
                 
                 <div className="pr-1">
                   <i className="pr-small fs-small fas far fa-calendar fc-pink"></i> 
-                  <span className="fs-small fc-dark">{Intl.DateTimeFormat('en-GB').format(date)}</span>
+                  <span className="fs-small fc-dark">{date.substring(0,10)}</span>
                 </div>
                 <div className="pr-1">
                   <i className="pr-small fs-small fas fa-clock fc-pink"></i> 
@@ -221,12 +219,10 @@ export default class EventView extends Component {
             <ul className="flex-row pa-1">
               {event.attendees.map((attendee, i) => {
                 return <li 
-                  className="col-2 grid-element grid-element--small" 
+                  className="col-2 grid-element grid-element--small flex-row" 
                   style={{backgroundImage: `url(${attendee.imgUrl})`}}
                   key={i}>
-                  <Link className="col-12 flex-row ai-end jc-end" to={`/users/${attendee._id}`}>
-                      <span className="bg-pink fs-small fc-white pl-small pr-small">{attendee.username}</span>
-                  </Link>
+                  {/* <Link className="col-12 flex-row ai-end jc-end" to={`/users/${attendee._id}`}></Link> */}
                 </li>
               })}
             </ul>

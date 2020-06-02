@@ -4,7 +4,7 @@ import Section from "../components/Section"
 import IconButton from "../components/IconButton"
 import apiClient from "../services/apiClient"
 import Loading from "../components/Loading"
-import Error from "../components/Error"
+//import Error from "../components/Error"
 import ChatCard from "../components/ChatCard"
 import dateFormatter from "../utils/dateFormatter"
 
@@ -16,36 +16,55 @@ export default class ChatsView extends Component {
     errorStatus: ""
   }
 
-  componentDidMount() {
-    apiClient
-      .getChats()
-      .then((chats) => {
-        this.setState({
-          isLoading: false,
-          chats: chats.data
-        });
-      })
-      .catch(({...error}) => {
-        this.setState({
-          isLoading: false,
-          errorStatus: error.response.status
-        });
+  async componentDidMount() {
+    try {
+      const serverChats = await apiClient.getChats();
+      //const filteredChats = await this.filterChats(serverChats.data);
+      this.setState({
+        isLoading: false,
+        chats: serverChats.data
       });
+    } catch (error) {
+      this.setState({
+        isLoading: false,
+        // errorStatus: error.response.status
+      });
+    } 
   }
 
   handleRedirect = (chatId) => {
     this.props.history.push(`/chat/${chatId}`, { from: this.props.location })
   }
 
+  // filterChats = (chats) => {
+    // return chats.filter((chat) => {
+    //   return chat.users.filter((user) => {
+    //     console.log(user)
+    //     return this.props.currentUser._id === user._id;
+    //   })
+    // })
+    
+    // const filtered =  chats.filter((chat) => {
+    //   return chat.users.includes((user) => {
+    //     return user._id === this.props.currentUser._id
+    //   })
+    // });
+
+    // return filtered;
+
+
+  // }
+
   render() {
 
-    const { isLoading, errorStatus, chats} = this.state;
+    const { isLoading, chats} = this.state;
     return (
       
       <div className="App__container">
         {isLoading && <Loading/>}
-        {!isLoading && errorStatus && <Error status={errorStatus}/>}
-        {!isLoading && !errorStatus &&
+        {/* {!isLoading && errorStatus && <Error status={errorStatus}/>} */}
+        {/* {!isLoading && !errorStatus && */}
+        {!isLoading &&
         <>
         <Navbar>
           <IconButton
@@ -58,7 +77,7 @@ export default class ChatsView extends Component {
         </Navbar>
         <Section hasNav>
         <ul className="flex-row pt-1 pr-1 pl-1">
-            { chats.map((chat, i) => {
+            { chats.length > 0 && chats.map((chat, i) => {
               return (
                 chat.messages.length > 0 &&
                 <ChatCard
@@ -79,7 +98,6 @@ export default class ChatsView extends Component {
             iconClass="fas fa-border-all"
           />
           <IconButton
-            to="/chat"
             iconClass="fas fa-comment-alt"
           />
           <IconButton
