@@ -15,7 +15,7 @@ export default class ChatView extends Component {
   state = { msg: "", chat: [] };
 
 
-  async componentDidMount() {
+  componentDidMount() {
     const roomId=this.props.match.params.id
     apiClient
       .getChat(roomId)
@@ -28,6 +28,7 @@ export default class ChatView extends Component {
     this.socket = io.connect('http://localhost:5000');
     this.socket.emit("join", {id: roomId });
     this.socket.on("newMessage", ({ sender, content, createdAt }) => {
+      apiClient.putMessage(roomId, {content:content, senderId:sender._id});
       this.setState({
         chat: [...this.state.chat, { sender, content, createdAt }]
       });

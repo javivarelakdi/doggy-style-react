@@ -143,6 +143,7 @@ export default class EventView extends Component {
       showPopup: !this.state.showPopup
     });
   }
+  
 
   render() {
     const { event, isLoading, editing, name, description, date, initTime, endTime, errorStatus, lng, lat } = this.state;
@@ -158,7 +159,7 @@ export default class EventView extends Component {
           <div className="profile__pic-container">
             <IconButton
               buttonClass="z-index-1000 pa-tl"
-              iconClass="fas fa-chevron-left"
+              iconClass="fas fa-chevron-left ba-white bg-pink fc-white pa-small"
               onClick={this.props.history.goBack}
             />
             <Map 
@@ -173,19 +174,19 @@ export default class EventView extends Component {
           <div >
             <div className="flex-row jc-between">
               <div className="flex-row col-8 pa-1">
-                <h2 className="ellipsis col-12 pb-small">{name}</h2>
+                <h2 className="ellipsis col-12 pb-small fc-dark">{name}</h2>
                 
                 <div className="pr-1">
                   <i className="pr-small fs-small fas far fa-calendar fc-pink"></i> 
-                  <span className="fs-small">{Intl.DateTimeFormat('en-GB').format(date)}</span>
+                  <span className="fs-small fc-dark">{Intl.DateTimeFormat('en-GB').format(date)}</span>
                 </div>
                 <div className="pr-1">
                   <i className="pr-small fs-small fas fa-clock fc-pink"></i> 
-                  <span className="fs-small">{`${initTime} - ${endTime}`}</span>
+                  <span className="fs-small fc-dark">{`${initTime} - ${endTime}`}</span>
                 </div>
                 <div>
                   <i className="pr-small fs-small fas fa-map-marker-alt fc-pink"></i>
-                  <span className="fs-small pr-small">2km away</span>
+                  <span className="fs-small pr-small fc-dark">2km away</span>
                 </div>
               </div>
               { event.owner._id !== this.props.currentUser._id ?
@@ -215,8 +216,8 @@ export default class EventView extends Component {
                 </ul>
               }
             </div>
-            <p className="pr-1 pl-1">{description}</p>
-            <p className="pr-1 pl-1 pt-1">Attendees:</p>
+            <p className="pr-1 pl-1 fc-dark">{description}</p>
+            <p className="pr-1 pl-1 pt-1 fc-dark">Attendees:</p>
             <ul className="flex-row pa-1">
               {event.attendees.map((attendee, i) => {
                 return <li 
@@ -279,7 +280,7 @@ export default class EventView extends Component {
               label="date"
               type="date"
               name="date"
-              value={date.toISOString().substring(0,10)}
+              value={date}
               onChange={this.handleChange}
               />
             <Field 

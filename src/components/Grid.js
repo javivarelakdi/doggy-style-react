@@ -5,75 +5,21 @@ import Loading from "../components/Loading"
 export default class Grid extends Component {
   
   state={
-    users:[],
     isLoading: true
   }
   
   componentDidMount(){
-    if (this.props.isFavView) {
       this.setState({
-        users: this.props.users,
         isLoading: false
       });
-    } else {
-      const includeDistance = async user => {
-        const userPos = await this.getDistance(user.location.coordinates[0], user.location.coordinates[1])
-        return {...user, distance: userPos};
-      }
-      const usersWithDistance = () => Promise.all(this.props.users.map(user => includeDistance(user)))
-      usersWithDistance().then(result => {
-        result.sort(this.compare);
-        this.setState({
-          users: result,
-          isLoading: false
-        });
-      })
     }
-    
-  }
-
-  compare = (a, b) => {
-    const userA = a.distance
-    const userB = b.distance
-   
-    let comparison = 0;
-    if (userA > userB) {
-      comparison = 1;
-    } else if (userA < userB) {
-      comparison = -1;
-    }
-    return comparison;
-  }
-
-  getDistance = (lng, lat) => {
-    return new Promise(resolve => {
-      const toRad = (degrees) => {
-        return degrees * (Math.PI/180);
-      }
-      
-      const distance = (lon1, lat1, lon2, lat2) => {
-          const R = 6371; // Radius of the earth in km
-          const dLat = toRad(lat2-lat1);  // Javascript functions in radians
-          const  dLon = toRad(lon2-lon1); 
-          const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-                  Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * 
-                  Math.sin(dLon/2) * Math.sin(dLon/2); 
-          const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
-          const d = R * c; // Distance in km
-          return d;
-        }
-        
-        window.navigator.geolocation.getCurrentPosition(function(pos) {
-          resolve(distance(pos.coords.longitude, pos.coords.latitude, lng, lat))
-        });
-    })
-  }
   
   render() {
-    const { columns, currentUserId, isFiltered, filteredUsers } = this.props;
+    const { currentUserId, columns, isFiltered, filteredUsers, isFav } = this.props;
+
     const users = isFiltered 
       ? filteredUsers
-      : this.state.users ;
+      : this.props.users ;
     let colIndex; 
     switch (true) {
       case (columns === 2):
@@ -94,12 +40,15 @@ export default class Grid extends Component {
         { users.length ?
           users.map((user, i) => {
             return (
+              currentUserId === user._id ?
+              null
+              :
               <li className={`col-${colIndex} grid-element flex-row`} key={i} style={{backgroundImage: `url(${user.imgUrl})`}}>
                   <Link className="col-12 flex-row ai-end jc-end" to={user._id}>
                     <span className="bg-pink fs-small fc-white pl-small pr-small">
-                    { (currentUserId && currentUserId === user._id) || !user.distance
+                    { isFav
                       ? user.username
-                      : `${user.username}: ${user.distance.toFixed(2)} km away`}
+                      : `${user.username}: ${(user.dist.calculated / 1000).toFixed(2)} km` }
                   </span>
                   </Link>
               </li>

@@ -27,32 +27,29 @@ export default class GridView extends Component {
     isFiltered: false
   };
 
-  componentDidMount() {
-    apiClient
-      .getUsers()
-      .then((users) => {
-        dogApi
-        .listAll()
-        .then(({data: response}) => {
-          this.setState({
-            isLoading: false,
-            breedOptions: this.displayDogOptions(response.message),
-            users: users.data
-          });
-        })
-        .catch((error) => {
-          this.setState({
-            isLoading: false,
-            //errorStatus: error.response.status,
-          });
-        });
-      })
-      .catch(({...error}) => {
-        this.setState({
-          isLoading: false,
-          errorStatus: error.response.status
-        });
+  async componentDidMount() {
+    try {
+      const clientPosition = await this.getPosition()
+      const coords = {lng: clientPosition.coords.longitude, lat: clientPosition.coords.latitude}
+      const users = await apiClient.getUsers(coords)
+      const breedOptions = await dogApi.listAll()
+      this.setState({
+        isLoading: false,
+        breedOptions: this.displayDogOptions(breedOptions.data.message),
+        users: users.data
       });
+    } catch ({...error}) {
+      this.setState({
+        isLoading: false,
+        errorStatus: error.response.status
+      });
+    }
+  }
+
+  getPosition = () => {
+    return new Promise((resolve, reject) => {
+      navigator.geolocation.getCurrentPosition(resolve, reject);
+    });
   }
 
   displayDogOptions = (response) =>{
@@ -78,13 +75,16 @@ export default class GridView extends Component {
   handleFilterSubmit = (e) => {
     e.preventDefault();
     const { breed, gender, age, users } = this.state;
+    
     this.togglePopup();
+    
     let usersWithAges = users.map((user) => {
       user.age = dateFormatter.getAge(user.birth)
       return user;
     })
 
     let filtered = [...usersWithAges];
+
     if (breed !== "no-filter"){
       filtered = usersWithAges.filter((user) => {
         return breed === user.breed 

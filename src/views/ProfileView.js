@@ -167,6 +167,7 @@ export default class ProfileView extends Component {
 
   render() {
     const { user, isLoading, editing, errorStatus, distance } = this.state;
+    
     return (
       <div className="App__container">
         {isLoading && <Loading/>}
@@ -177,8 +178,8 @@ export default class ProfileView extends Component {
           <>
             <div className="profile__pic-container">
             <IconButton
-              buttonClass="z-index-1000 pa-tl"
-              iconClass="fas fa-chevron-left"
+              buttonClass="z-index-1000 pa-tl "
+              iconClass="fas fa-chevron-left ba-white bg-pink fc-white pa-small"
               to="/"
             />
             <img src={user.imgUrl} className="profile__pic-container__pic" alt={user.username}/>
@@ -187,9 +188,9 @@ export default class ProfileView extends Component {
             <div className="pb-1">
               <div className="flex-row jc-between">
                 <div className="flex-row col-8 pa-1">
-                  <h2 className="ellipsis col-12 pb-small">{user.username}</h2>
+                  <h2 className="ellipsis col-12 pb-small fc-dark">{user.username}</h2>
                   <i className="pr-small fs-small fas fa-map-marker-alt fc-pink"></i>
-                  <span className="fs-small pr-small">{distance.toFixed(2)} km away</span>
+                  <span className="fs-small pr-small fc-dark">{distance.toFixed(2)} km away</span>
                 </div>
                 <ul className={
                   `flex-row col-4 pa-1 ${this.props.match.params.id === this.props.currentUser._id 
@@ -229,21 +230,21 @@ export default class ProfileView extends Component {
                 }
                 </ul>
               </div>
-              <p className="pr-1 pl-1 pb-1">{user.about}</p>
-              <ul className="pr-1 pl-1 flex-row">
-                <li className="flex-row col-12 bb-white pb-1">
+              <p className="pr-1 pl-1 pb-1 fc-dark">{user.about}</p>
+              <ul className="pr-1 pl-1 flex-row fc-dark">
+                <li className="flex-row col-12 bb-dark pb-1">
                     <span className="flex-row col-4">Breed:</span>
                     <span className="flex-row col-8">{user.breed}</span>
                 </li>
-                <li className="flex-row col-12 bb-white pb-1 pt-1">
+                <li className="flex-row col-12 bb-dark pb-1 pt-1 fc-dark">
                     <span className="flex-row col-4">Age:</span>
                     <span className="flex-row col-8">{dateFormatter.getAge(user.birth)}</span>
                 </li>
-                <li className="flex-row col-12 pt-1 pb-1 bb-white">
+                <li className="flex-row col-12 pt-1 pb-1 bb-dark  fc-dark">
                     <span className="flex-row col-4">Gender:</span>
                     <span className="flex-row col-8">{user.gender}</span>
                 </li>
-                <li className="flex-row col-12 pt-1">
+                <li className="flex-row col-12 pt-1  fc-dark">
                     <span className="flex-row col-4">Events:</span>
                     <ul className="flex-row col-8">
                       { user.events.length  > 0 ?
@@ -285,7 +286,7 @@ export default class ProfileView extends Component {
           <div className="profile__pic-container">
             <IconButton
             buttonClass="z-index-1000 pa-tl"
-            iconClass="fas fa-chevron-left"
+            iconClass="fas fa-chevron-left ba-white bg-pink fc-white pa-small"
             onClick= {this.changeScreen}/>
             <img src={user.imgUrl} className="profile__pic-container__pic" alt={user.username}/>
             </div>

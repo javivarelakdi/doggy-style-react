@@ -25,8 +25,8 @@ class ApiClient {
     return this.apiClient.post("/signup", body);
   }
 
-  getUsers() {
-    return this.apiClient.get("/users");
+  getUsers(body) {
+    return this.apiClient.post("/users", body);
   }
 
   getUser(userId) {
@@ -75,6 +75,10 @@ class ApiClient {
 
   createChat(body) {
     return this.apiClient.post("/chats/new", body)
+  }
+
+  putMessage(roomId, body) {
+    return this.apiClient.put(`/chats/${roomId}`, body)
   }
 
 

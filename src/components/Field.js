@@ -7,7 +7,7 @@ export default class Field extends Component {
   render() {
     const { label, type, name, value, onChange, options, required, validationError } = this.props
     return (
-      <li className="flex-row col-12 bb-white pb-1 pt-1">
+      <li className="flex-row col-12 bb-dark fc-dark pb-1 pt-1">
         <label className="col-4">{label}</label>
         {type === "select" ?
         <select 

@@ -3,7 +3,7 @@
 $pink: #EFA8E4;
 $white: #fff;
 $blue: #97E5EF;
-
+$dark: #631646;
 
 $font: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
@@ -73,7 +73,7 @@ i{font-size: $font-size-medium;}
 .bg-blue {background-color: $blue;}
 
 //fonts
-
+.fc-dark{color: $dark}
 .fc-pink{color: $pink;}
 .fc-white{color: $white;} 
 .fw-bold{font-weight: bold;}
@@ -89,7 +89,7 @@ i{font-size: $font-size-medium;}
   border-radius: 10px;
 }
 .bb-white { border-bottom: 1px solid $white; }
-
+.bb-dark { border-bottom: 1px solid $dark; }
 // App container
 
 .App{
@@ -264,6 +264,9 @@ i{font-size: $font-size-medium;}
   color: $white;
   border: 1px solid $white;
   font-weight: bold;
+  &:hover, :focus{
+    outline: none;
+  }
 } 
 
 .button--secondary{
@@ -275,6 +278,9 @@ i{font-size: $font-size-medium;}
   color: $pink;
   border: none;
   background: transparent;
+  &:hover, :focus{
+    outline: none;
+  }
 }
 
 .button--disabled{
@@ -301,6 +307,7 @@ input, select {
   background-color: $white;
   border: 1px solid $white;
   padding: rem(5px);
+  color:$dark;
 }
 
 .textarea{
@@ -409,8 +416,9 @@ input, select {
   position: fixed;
   max-width: $max-width;
   min-width: $min-width;
-  &__active-tab {
+  .tab-list__active-tab {
     background-color: $pink;
+    color: $white;
   }
 }
 

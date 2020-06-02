@@ -116,7 +116,7 @@ export default class EventsView extends Component {
   
     switch(fieldName) {
       case 'name':
-        nameValid = value.length > 6 && value.length < 20; 
+        nameValid = value.length > 6 && value.length < 120; 
         formErrors.name = nameValid ? '' : 'description is lower than 6 characters or higher than 20 characters';
         break;
       case 'description':

@@ -72,14 +72,14 @@ export default class FavsView extends Component {
           <TabContent activeTab={activeTab}>
             <div label="following">
               {favs.length
-                ? <Grid users={favs} columns={2} currentUserId={this.props.currentUser._id} isFavView={true}/>
-                : <p className="pa-1">how come no favs yet? click on the star within a dog profile to add it to favourites</p>
+                ? <Grid users={favs} columns={2} currentUserId={this.props.currentUser._id} isFav/>
+                : <p className="pa-1 fc-dark">how come no favs yet? click on the star within a dog profile to add it to favourites</p>
               }
             </div>
             <div label="followers">
               {fans.length
-                ? <Grid users={fans} columns={2} currentUserId={this.props.currentUser._id} isFavView={true}/>
-                : <p className="pa-1">ouch! no fans yet, wait others dogs to add you to their favourites lists</p>
+                ? <Grid users={fans} columns={2} currentUserId={this.props.currentUser._id} isFav/>
+                : <p className="pa-1 fc-dark">ouch! no fans yet, wait others dogs to add you to their favourites lists</p>
               }
             </div>
           </TabContent>
