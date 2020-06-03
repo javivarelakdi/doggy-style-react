@@ -21,7 +21,7 @@ export default class Login extends Component {
   }
 
   handleSubmit = (e) => {
-    e.preventDefault();
+    e.preventDefault()
     const { username, password, lng, lat } = this.state;
     const { onLogin } = this.props;
     onLogin({ username, password, lng, lat });
@@ -70,12 +70,16 @@ export default class Login extends Component {
           />
         </div>
         <div className=" pb-1 pt-1 ta-center col-6">
-          <button className="button" type="submit">Sign in</button>
+          <button 
+            className={`button ${(!username && !password) ? "button--disabled" : ""}`}
+            disabled={!username && !password} 
+            type="submit">
+            Sign in
+          </button>
         </div>
       </form>
       <div className="col-12 pb-1 ta-center fs-small">
         <p>Don't have an account? <Link to="/signup">Sign up</Link></p>
-        <p>Forgot your password? <Link to="/" className="disabled">Reset password</Link></p>
       </div>
       </>
     );

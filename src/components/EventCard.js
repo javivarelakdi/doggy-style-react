@@ -26,7 +26,7 @@ export default class EventCard extends Component {
             </div>
             <div className="col-3 flex-column jc-between">
                 <p className="fs-small ta-right"><i className="pr-small fas fa-user fa-sm"></i>{attendees}</p>
-                <p className="fs-small ta-right">{isUserAttending ? "I´m going" : "I´m not going"}</p>
+                <p className="fs-small ta-right">{isUserAttending ? "I´m going" : "not going"}</p>
                 <p className="fs-small fw-bold ta-right">Host: {ownerName}</p>
                 <div className="grid-element grid-element--small flex-row ai-end jc-end" 
                   style={{backgroundImage: `url(${ownerImgUrl})`}}>

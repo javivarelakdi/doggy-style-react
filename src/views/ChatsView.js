@@ -13,16 +13,23 @@ export default class ChatsView extends Component {
   state = {
     isLoading: true, 
     chats: [],
-    errorStatus: ""
+    errorStatus: "",
+    showSearch: false,
+    search: "",
+    isFiltered: false
   }
 
   async componentDidMount() {
     try {
       const serverChats = await apiClient.getChats();
-      //const filteredChats = await this.filterChats(serverChats.data);
+      const chatsWithOtherName = serverChats.data.map((chat) => {
+        const theOther = chat.users.filter(user => user._id !== this.props.currentUser._id);
+        chat.theOtherName = theOther[0].username;
+        return chat;
+      });
       this.setState({
         isLoading: false,
-        chats: serverChats.data
+        chats: chatsWithOtherName
       });
     } catch (error) {
       this.setState({
@@ -32,32 +39,31 @@ export default class ChatsView extends Component {
     } 
   }
 
+  handleFilter = (e) => {
+    this.setState({
+      search: e.target.value,
+    });
+    let { chats } = this.state;
+    if (chats.length > 0) {
+      const filtered = chats.filter((chat) => {
+        return chat.theOtherName.toUpperCase().indexOf(e.target.value.toUpperCase()) > -1
+      });
+      this.setState({
+        filtered: filtered,
+        isFiltered: filtered.length > 0 ? true : false
+      })
+    }
+  };
+
   handleRedirect = (chatId) => {
     this.props.history.push(`/chat/${chatId}`, { from: this.props.location })
   }
 
-  // filterChats = (chats) => {
-    // return chats.filter((chat) => {
-    //   return chat.users.filter((user) => {
-    //     console.log(user)
-    //     return this.props.currentUser._id === user._id;
-    //   })
-    // })
-    
-    // const filtered =  chats.filter((chat) => {
-    //   return chat.users.includes((user) => {
-    //     return user._id === this.props.currentUser._id
-    //   })
-    // });
-
-    // return filtered;
-
-
-  // }
 
   render() {
 
-    const { isLoading, chats} = this.state;
+    const { isLoading } = this.state;
+    const chats = this.state.isFiltered === true ? this.state.filtered : this.state.chats;
     return (
       
       <div className="App__container">
@@ -66,26 +72,45 @@ export default class ChatsView extends Component {
         {/* {!isLoading && !errorStatus && */}
         {!isLoading &&
         <>
-        <Navbar>
-          <IconButton
-            to={`/${this.props.currentUser._id}`}
-            iconClass="fas fa-user-circle"
-          />
-          <IconButton
-            iconClass="fas fa-search"
-          />
+        <Navbar isChat>
+          <ul className="flex-row jc-between full-height">
+            <li className="pl-1 pr-1 col-3 ta-center as-center fc-pink">
+              <IconButton
+                iconClass="fas fa-chevron-left"
+                onClick={this.props.history.goBack}
+              />
+            </li>
+            <li className="pl-1 pr-1 col-9 ta-center as-center fc-pink">
+            <input 
+                type="text" 
+                className="pt-small"
+                value={this.state.search}
+                name="search"
+                placeholder="look for a dog"
+                onChange={this.handleFilter}/>
+            <IconButton
+              buttonClass="pt-1"
+              iconClass="fas fa-search"
+            />
+            </li>
+          </ul>
+          
         </Navbar>
         <Section hasNav>
         <ul className="flex-row pt-1 pr-1 pl-1">
             { chats.length > 0 && chats.map((chat, i) => {
+              const lastMessage =  chat.messages.length ? chat.messages[chat.messages.length - 1] : null;
+              const theOther = chat.users.filter(user => user._id !== this.props.currentUser._id);
+              const isMine = lastMessage && lastMessage.sender._id ===  this.props.currentUser._id ? true : false
               return (
                 chat.messages.length > 0 &&
                 <ChatCard
                   key={i}
-                  title={chat.messages[0].sender.username}
-                  time={dateFormatter.timeFormat(chat.messages[0].createdAt)}
-                  imgUrl={chat.messages[0].sender.imgUrl}
-                  content={chat.messages[0].content}
+                  title={theOther[0].username}
+                  time={dateFormatter.timeFormat(lastMessage.createdAt)}
+                  imgUrl={theOther[0].imgUrl}
+                  isMine={isMine}
+                  content={lastMessage.content}
                   onClick={() => this.handleRedirect(chat._id)}
                 />
               );

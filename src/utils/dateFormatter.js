@@ -2,8 +2,10 @@ class DateFormatter {
 
     timeFormat (utcString) {
         const dateFormat = new Date(utcString);
-        const hours = dateFormat.getHours()
-        const minutes = dateFormat.getMinutes()
+        let hours = dateFormat.getHours()
+        let minutes = dateFormat.getMinutes()
+        hours = hours.length < 2 ? '0' + hours : hours;
+        minutes = minutes.length < 2 ? '0' + minutes : minutes;
         return `${hours}:${minutes}`;
     }
 

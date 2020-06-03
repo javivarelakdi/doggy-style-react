@@ -3,7 +3,7 @@ import Section from "../components/Section"
 import Form from "../components/Form"
 import IconButton from "../components/IconButton"
 import Field from "../components/Field"
-// import { Link } from "react-router-dom"
+import { Link } from "react-router-dom"
 import apiClient from "../services/apiClient"
 import Loading from "../components/Loading"
 import Error from "../components/Error"
@@ -188,14 +188,14 @@ export default class EventView extends Component {
                 </div>
               </div>
               { event.owner._id !== this.props.currentUser._id ?
-                <div className="col-4 pa-1">
+                <div className="col-4 pa-1 ta-right fc-white">
                   <select 
-                    className="col-12 select select--button" 
+                    className="col-12 select select--button fc-white ba-white" 
                     name="isAttending"
                     value={this.state.isAttending}
                     onChange={this.handleToggleAttendee}>
-                    <option value="true">I´m coming</option> 
-                    <option value="false">Not coming</option>
+                    <option value="true">✔</option> 
+                    <option value="false">✘</option>
                   </select>
                 </div>
                 :
@@ -222,7 +222,7 @@ export default class EventView extends Component {
                   className="col-2 grid-element grid-element--small flex-row" 
                   style={{backgroundImage: `url(${attendee.imgUrl})`}}
                   key={i}>
-                  {/* <Link className="col-12 flex-row ai-end jc-end" to={`/users/${attendee._id}`}></Link> */}
+                  <Link className="col-12 flex-row ai-end jc-end" to={`/${attendee._id}`}></Link>
                 </li>
               })}
             </ul>

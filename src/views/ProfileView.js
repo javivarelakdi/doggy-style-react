@@ -180,7 +180,7 @@ export default class ProfileView extends Component {
             <IconButton
               buttonClass="z-index-1000 pa-tl "
               iconClass="fas fa-chevron-left ba-white bg-pink fc-white pa-small"
-              to="/"
+              onClick={this.props.history.goBack}
             />
             <img src={user.imgUrl} className="profile__pic-container__pic" alt={user.username}/>
             </div>
@@ -252,7 +252,8 @@ export default class ProfileView extends Component {
                           return <li key={i} className="pb-small">
                             <i className="fc-pink fs-small pr-1 far fa-calendar"></i>
                             <Link to={`/events/${event._id}`}>
-                              {event.name}: {event.date.substring(0,10)}</Link>
+                              {/* {event.name}: {event.date.substring(0,10)}</Link> */}
+                              {event.name}</Link>
                           </li>  
                         })
                       : this.props.match.params.id === this.props.currentUser._id ? 
