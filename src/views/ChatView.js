@@ -92,7 +92,7 @@ export default class ChatView extends Component {
                 </div>
               </div>
             </div>
-          ))};
+          ))}
         </Section>
         <Navbar isFooter isChat>
           <form className="flex-row jc-between full-height" onSubmit={this.onMessageSubmit}>
