@@ -470,6 +470,9 @@ input, select {
   bottom: 0;
   background: $blue;
   margin: auto;
+  width:80%;
+  max-width: 430px;
+  height: calc(100vh - 50%)
 }
 .popup_inner--small {
   width:80%;
