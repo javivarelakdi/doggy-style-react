@@ -258,8 +258,8 @@ export default class ProfileView extends Component {
                         })
                       : this.props.match.params.id === this.props.currentUser._id ? 
                         <>
-                        <li className="pb-small">Not hosting events yet</li>
-                        <li><Link to="/events"><button className="button">go create one</button></Link></li>
+                        <li className="pb-small col-12">Not hosting events yet</li>
+                        <li className="col-12"><Link to="/events"><button className="button">go create one</button></Link></li>
                         </>
                         :
                         <li className="pb-small">Not hosting events yet</li>

@@ -136,7 +136,7 @@ export default class Signup extends Component {
     const { username, password, breed, gender, about, birth, formErrors } = this.state;
 
     return (
-      <>
+      <div className="App__container">
         <h1 className="pt-1"><span className="bg-pink fs-big">Signup</span></h1>
         <Form 
           onSubmit={this.handleSubmit}
@@ -200,7 +200,7 @@ export default class Signup extends Component {
         <div className="col-12 pb-1 ta-center fs-small">
           <p>Do you have an account? <Link to="/login">Login</Link></p>
         </div>
-      </>
+      </div>
     );
   }
 }

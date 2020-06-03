@@ -27,16 +27,17 @@ export default class EventView extends Component {
     errorStatus: "",
     lng:"",
     lat:"",
-    showPopup: false
+    showPopup: false, 
   };
 
   componentDidMount() {
     apiClient
       .getEvent(this.props.match.params.id)
-      .then((event) => {
+      .then(async (event) => {
         const attending = event.data.attendees.filter((att) => {
           return att._id === this.props.currentUser._id
         })
+        const distance = await this.getDistance(event.data.location.coordinates[0], event.data.location.coordinates[1])
         this.setState({
           isLoading: false,
           event: event.data,
@@ -47,7 +48,8 @@ export default class EventView extends Component {
           initTime: event.data.initTime,
           endTime: event.data.endTime,
           lng: event.data.location.coordinates[0],
-          lat: event.data.location.coordinates[1]
+          lat: event.data.location.coordinates[1],
+          distance: distance
         });
       })
       .catch(({...error}) => {
@@ -61,6 +63,30 @@ export default class EventView extends Component {
   changeScreen = () => {
     this.setState({
       editing: !this.state.editing
+    })
+  }
+
+  getDistance = (lng, lat) => {
+    return new Promise(resolve => {
+      const toRad = (degrees) => {
+        return degrees * (Math.PI/180);
+      }
+      
+      const distance = (lon1, lat1, lon2, lat2) => {
+          const R = 6371; // Radius of the earth in km
+          const dLat = toRad(lat2-lat1);  // Javascript functions in radians
+          const  dLon = toRad(lon2-lon1); 
+          const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                  Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * 
+                  Math.sin(dLon/2) * Math.sin(dLon/2); 
+          const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+          const d = R * c; // Distance in km
+          return d;
+        }
+        
+        window.navigator.geolocation.getCurrentPosition(function(pos) {
+          resolve(distance(pos.coords.longitude, pos.coords.latitude, lng, lat))
+        });
     })
   }
 
@@ -144,7 +170,7 @@ export default class EventView extends Component {
   
 
   render() {
-    const { event, isLoading, editing, name, description, date, initTime, endTime, errorStatus, lng, lat } = this.state;
+    const { event, isLoading, editing, name, description, date, initTime, endTime, errorStatus, lng, lat, distance } = this.state;
       
     return (
       <div className="App__container">
@@ -184,7 +210,7 @@ export default class EventView extends Component {
                 </div>
                 <div>
                   <i className="pr-small fs-small fas fa-map-marker-alt fc-pink"></i>
-                  <span className="fs-small pr-small fc-dark">2km away</span>
+                  <span className="fs-small pr-small fc-dark">{distance}km away</span>
                 </div>
               </div>
               { event.owner._id !== this.props.currentUser._id ?

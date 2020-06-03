@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 export default class EventCard extends Component {
   render() {
-    const { title, description, timeSlot, location, date, attendees, isUserAttending, ownerName, ownerImgUrl, onClick} = this.props;
+    const { title, description, timeSlot, date, attendees, isUserAttending, ownerName, ownerImgUrl, onClick} = this.props;
    
     return (
       <li className="flex-row col-12 pa-1 mb-1 ba-white bg-pink" onClick={onClick}>
@@ -13,9 +13,9 @@ export default class EventCard extends Component {
                   <p className="fs-small ellipsis">{description}</p>
                 </div>
                 <div className="flex-column col-12 jc-between pt-1">
-                  <div className="col-12">
+                  {/* <div className="col-12">
                     <span className="fs-small"><i className="pr-small fs-small fas fa-map-marker-alt"></i>{location}</span>
-                  </div>
+                  </div> */}
                   <div className="col-12">
                     <span className="fs-small"><i className="pr-small fs-small far fa-calendar"></i>{date}</span>
                   </div>
