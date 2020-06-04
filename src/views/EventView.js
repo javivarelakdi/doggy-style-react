@@ -210,7 +210,7 @@ export default class EventView extends Component {
                 </div>
                 <div>
                   <i className="pr-small fs-small fas fa-map-marker-alt fc-pink"></i>
-                  <span className="fs-small pr-small fc-dark">{distance}km away</span>
+                  <span className="fs-small pr-small fc-dark">{distance.tofixed(2)}km away</span>
                 </div>
               </div>
               { event.owner._id !== this.props.currentUser._id ?
