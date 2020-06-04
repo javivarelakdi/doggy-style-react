@@ -264,6 +264,7 @@ i{font-size: $font-size-medium;}
   color: $white;
   border: 1px solid $white;
   font-weight: bold;
+  cursor: pointer;
   &:hover, :focus{
     outline: none;
   }
@@ -278,6 +279,7 @@ i{font-size: $font-size-medium;}
   color: $pink;
   border: none;
   background: transparent;
+  cursor: pointer;
   &:hover, :focus{
     outline: none;
   }
@@ -293,6 +295,7 @@ a{
   text-decoration: none; 
   color: $pink;
   font-weight: 600;
+  cursor: pointer;
 }
 
 a.link--disabled{
@@ -322,6 +325,7 @@ input, select {
   color: $white;
   font-weight: bold;
   text-align: end;
+  cursor: pointer;
 }
 
 // navs
