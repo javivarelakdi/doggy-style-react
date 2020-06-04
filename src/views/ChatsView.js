@@ -80,7 +80,7 @@ export default class ChatsView extends Component {
                 onClick={this.props.history.goBack}
               />
             </li>
-            <li className="pl-1 pr-1 col-9 ta-center as-center fc-pink">
+            <li className="pl-1 pr-1 col-9 ta-right as-center fc-pink">
             <input 
                 type="text" 
                 className="pt-small"
