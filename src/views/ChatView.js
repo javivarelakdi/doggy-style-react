@@ -24,8 +24,8 @@ export default class ChatView extends Component {
           chat: chat.data.messages
         })
       })
-    //this.socket = io.connect(process.env.REACT_APP_BACKEND_URI);
-    this.socket = io.connect('http://localhost:5000');
+    this.socket = io.connect(process.env.REACT_APP_BACKEND_URI);
+    //this.socket = io.connect('http://localhost:5000');
     this.socket.emit("join", {id: roomId });
     this.socket.on("newMessage", ({ sender, content, createdAt }) => {
       // apiClient.putMessage(roomId, 
