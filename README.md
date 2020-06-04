@@ -6,7 +6,7 @@ Doggy Style React App
 ​
 ## Description
 ​
-Doggy Style is a social network for dog owners who want to make connections with other dog owners in their neighbourhoods
+Social Network for dogs with Geolocation using Express and Mongoose. Provided with real time chat using socket.io FrontEnd made with ReactJS
 
 ## Instructions how to start
 
@@ -16,7 +16,7 @@ start with `npm run start`​
 
 Frontend **http://localhost:3000**
 
-Backend **http://localhost:5000**
+Backend **https://doggy-style-api.herokuapp.com**
 
 ## User Stories (MVP)
 ​
@@ -33,8 +33,6 @@ Backend **http://localhost:5000**
 **Others profile** - As a user I want to be able to access to a page with info about other dogs with distance from me by geolocation, a button to chat and a button to make it favourite.
 ​
 **Logout** - As a user I want to be able to log out from the webpage so that I can make sure no one will access my account
-
-## Backlog
 
 **Events list** - As a user I want to see all the events available so I can choose which ones I want to attend
 ​
@@ -155,9 +153,6 @@ Backend **http://localhost:5000**
 	},
 	{ timestamps: true }
 ​
-### Trello
-
-[Link to Trello](https://trello.com/b/8Ok87uSv/doggy-style-react)
 
 ### Git
 
